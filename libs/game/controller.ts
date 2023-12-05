@@ -3,6 +3,7 @@ enum ControllerEvent {
     Connected = 1,
     //% block="disconnected"
     Disconnected = 2,
+    Disconnected = 2,
 }
 
 /**
@@ -11,6 +12,8 @@ enum ControllerEvent {
 //% weight=98 color="#D54322" icon="\uf11b"
 //% groups='["Single Player", "Multiplayer"]'
 //% blockGap=8
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 //% blockHidden=true //gb.override: hide the irrelevant block
 //% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller {
@@ -334,6 +337,7 @@ namespace controller {
          */
         //% weight=49 help=keys/dy
         //% blockHidden=true
+        //% blockHidden=true
         //% blockId=ctrldy block="%controller dy (up-down buttons)||scaled by %step"
         //% step.defl=100
         //% group="Multiplayer"
@@ -506,6 +510,7 @@ namespace controller {
      * @param step the distance, eg: 100
      */
     //% weight=49 help=keys/dy
+    //% blockHidden=true
     //% blockHidden=true
     //% blockId=keydy block="dy (up-down buttons)||scaled by %step"
     //% step.defl=100

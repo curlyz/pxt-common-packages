@@ -6,15 +6,15 @@ enum TileScale {
     //% block="16x16"
     Sixteen = 4,
     //% block="32x32"
-    ThirtyTwo = 5
+    ThirtyTwo = 5,
 }
 
 namespace tiles {
-
     /**
      * A (col, row) location in the tilemap
      **/
     //% blockNamespace=scene color="#401255"
+    //% blockHidden=true
     //% blockHidden=true
     export class Location {
         protected _row: number;
@@ -24,45 +24,77 @@ namespace tiles {
             this._col = col;
             this._row = row;
         }
-        
+
         get tileMap() {
             return game.currentScene().tileMap;
         }
 
+        //% blockHidden=true
+        //% group="Locations" blockSetVariable="location"
+        //% blockCombine block="column"
+        //% weight=100
         get column() {
             return this._col;
         }
 
+        //% blockHidden=true
+        //% group="Locations" blockSetVariable="location"
+        //% blockCombine block="row"
+        //% weight=100
         get row() {
             return this._row;
         }
 
+        //% blockHidden=true
+        //% group="Locations" blockSetVariable="location"
+        //% blockCombine block="x"
+        //% weight=100
         get x(): number {
             const scale = this.tileMap.scale;
             return (this._col << scale) + (1 << (scale - 1));
         }
 
+        //% blockHidden=true
+        //% group="Locations" blockSetVariable="location"
+        //% blockCombine block="y"
+        //% weight=100
         get y(): number {
             const scale = this.tileMap.scale;
             return (this._row << scale) + (1 << (scale - 1));
         }
 
+        //% blockHidden=true
+        //% group="Locations" blockSetVariable="location"
+        //% blockCombine block="left"
+        //% weight=100
         get left(): number {
-            return (this._col << this.tileMap.scale);
+            return this._col << this.tileMap.scale;
         }
 
+        //% blockHidden=true
+        //% group="Locations" blockSetVariable="location"
+        //% blockCombine block="top"
+        //% weight=100
         get top(): number {
-            return (this._row << this.tileMap.scale);
+            return this._row << this.tileMap.scale;
         }
 
+        //% blockHidden=true
+        //% group="Locations" blockSetVariable="location"
+        //% blockCombine block="right"
+        //% weight=100
         get right(): number {
             return this.left + (1 << this.tileMap.scale);
         }
 
+        //% blockHidden=true
+        //% group="Locations" blockSetVariable="location"
+        //% blockCombine block="bottom"
+        //% weight=100
         get bottom(): number {
             return this.top + (1 << this.tileMap.scale);
         }
-        
+
         get tileSet(): number {
             return this.tileMap.getTileIndex(this._col, this._row);
         }
@@ -85,10 +117,12 @@ namespace tiles {
          * @param direction The direction to fetch the location in
          */
         //% blockHidden=true
+        //% blockHidden=true
         //% blockId=tiles_location_get_neighboring_location
         //% block="tilemap location $direction of $this"
         //% this.defl=location
         //% this.shadow=variables_get
+        //% blockHidden=true
         //% blockHidden=true
         //% group="Locations" blockGap=8
         //% weight=10 help=tiles/get-neighboring-location
@@ -154,6 +188,7 @@ namespace tiles {
          * @param sprite
          */
         //% blockHidden=true
+        //% blockHidden=true
         //% blockId=gameplaceontile block="on top of %tile(myTile) place %sprite=variables_get(mySprite)"
         //% blockNamespace="scene" group="Tilemap Operations"
         //% weight=25
@@ -184,7 +219,12 @@ namespace tiles {
         protected _width: number;
         protected _height: number;
 
-        constructor(data: Buffer, layers: Image, tileset: Image[], scale: TileScale) {
+        constructor(
+            data: Buffer,
+            layers: Image,
+            tileset: Image[],
+            scale: TileScale
+        ) {
             this.data = data;
             this.layers = layers;
             this.tileset = tileset;
@@ -214,7 +254,9 @@ namespace tiles {
         getTile(col: number, row: number) {
             if (this.isOutsideMap(col, row)) return 0;
 
-            return this.data.getUint8(TM_DATA_PREFIX_LENGTH + (col | 0) + (row | 0) * this.width);
+            return this.data.getUint8(
+                TM_DATA_PREFIX_LENGTH + (col | 0) + (row | 0) * this.width
+            );
         }
 
         setTile(col: number, row: number, tile: number) {
@@ -224,7 +266,10 @@ namespace tiles {
                 this.data = this.data.slice();
             }
 
-            this.data.setUint8(TM_DATA_PREFIX_LENGTH + (col | 0) + (row | 0) * this.width, tile);
+            this.data.setUint8(
+                TM_DATA_PREFIX_LENGTH + (col | 0) + (row | 0) * this.width,
+                tile
+            );
         }
 
         getTileset() {
@@ -238,7 +283,10 @@ namespace tiles {
                 const originalImage = this.tileset[index];
 
                 if (originalImage) {
-                    if (originalImage.width <= size && originalImage.height <= size) {
+                    if (
+                        originalImage.width <= size &&
+                        originalImage.height <= size
+                    ) {
                         cachedImage = originalImage;
                     } else {
                         cachedImage = image.create(size, size);
@@ -259,17 +307,22 @@ namespace tiles {
         }
 
         isOutsideMap(col: number, row: number) {
-            return col < 0 || col >= this.width || row < 0 || row >= this.height;
+            return (
+                col < 0 || col >= this.width || row < 0 || row >= this.height
+            );
         }
     }
 
     export enum TileMapEvent {
         Loaded,
-        Unloaded
+        Unloaded,
     }
 
     export class TileMapEventHandler {
-        constructor(public event: TileMapEvent, public callback: (data: TileMapData) => void) {}
+        constructor(
+            public event: TileMapEvent,
+            public callback: (data: TileMapData) => void
+        ) {}
     }
 
     export class TileMap {
@@ -284,9 +337,8 @@ namespace tiles {
             this._layer = 1;
             this.scale = scale;
 
-            this.renderable = scene.createRenderable(
-                scene.TILE_MAP_Z,
-                (t, c) => this.draw(t, c)
+            this.renderable = scene.createRenderable(scene.TILE_MAP_Z, (t, c) =>
+                this.draw(t, c)
             );
         }
 
@@ -306,19 +358,27 @@ namespace tiles {
         }
 
         offsetX(value: number) {
-            return Math.clamp(0, Math.max(this.areaWidth() - screen.width, 0), value);
+            return Math.clamp(
+                0,
+                Math.max(this.areaWidth() - screen.width, 0),
+                value
+            );
         }
 
         offsetY(value: number) {
-            return Math.clamp(0, Math.max(this.areaHeight() - screen.height, 0), value);
+            return Math.clamp(
+                0,
+                Math.max(this.areaHeight() - screen.height, 0),
+                value
+            );
         }
 
         areaWidth() {
-            return this._map ? (this._map.width << this.scale) : 0;
+            return this._map ? this._map.width << this.scale : 0;
         }
 
         areaHeight() {
-            return this._map ? (this._map.height << this.scale) : 0;
+            return this._map ? this._map.height << this.scale : 0;
         }
 
         get layer(): number {
@@ -369,7 +429,10 @@ namespace tiles {
         }
 
         public setTileAt(col: number, row: number, index: number): void {
-            if (!this._map.isOutsideMap(col, row) && !this.isInvalidIndex(index))
+            if (
+                !this._map.isOutsideMap(col, row) &&
+                !this.isInvalidIndex(index)
+            )
                 this._map.setTile(col, row, index);
         }
 
@@ -409,7 +472,8 @@ namespace tiles {
         }
 
         public sampleTilesByType(index: number, maxCount: number): Location[] {
-            if (this.isInvalidIndex(index) || !this.enabled || maxCount <= 0) return [];
+            if (this.isInvalidIndex(index) || !this.enabled || maxCount <= 0)
+                return [];
 
             let count = 0;
             const reservoir: Location[] = [];
@@ -423,7 +487,11 @@ namespace tiles {
                         } else {
                             const potentialIndex = randint(0, count);
                             if (potentialIndex < maxCount) {
-                                reservoir[potentialIndex] = new Location(col, row, this);
+                                reservoir[potentialIndex] = new Location(
+                                    col,
+                                    row,
+                                    this
+                                );
                             }
                         }
                         ++count;
@@ -447,9 +515,15 @@ namespace tiles {
             const offsetY = camera.drawOffsetY & bitmask;
 
             const x0 = Math.max(0, camera.drawOffsetX >> this.scale);
-            const xn = Math.min(this._map.width, ((camera.drawOffsetX + target.width) >> this.scale) + 1);
+            const xn = Math.min(
+                this._map.width,
+                ((camera.drawOffsetX + target.width) >> this.scale) + 1
+            );
             const y0 = Math.max(0, camera.drawOffsetY >> this.scale);
-            const yn = Math.min(this._map.height, ((camera.drawOffsetY + target.height) >> this.scale) + 1);
+            const yn = Math.min(
+                this._map.height,
+                ((camera.drawOffsetY + target.height) >> this.scale) + 1
+            );
 
             for (let x = x0; x <= xn; ++x) {
                 for (let y = y0; y <= yn; ++y) {
@@ -470,26 +544,14 @@ namespace tiles {
                 for (let x = x0; x <= xn; ++x) {
                     const xLine = ((x - x0) << this.scale) - offsetX;
                     if (xLine >= 0 && xLine <= screen.width) {
-                        target.drawLine(
-                            xLine,
-                            0,
-                            xLine,
-                            target.height,
-                            1
-                        );
+                        target.drawLine(xLine, 0, xLine, target.height, 1);
                     }
                 }
 
                 for (let y = y0; y <= yn; ++y) {
                     const yLine = ((y - y0) << this.scale) - offsetY;
                     if (yLine >= 0 && yLine <= screen.height) {
-                        target.drawLine(
-                            0,
-                            yLine,
-                            target.width,
-                            yLine,
-                            1
-                        );
+                        target.drawLine(0, yLine, target.width, yLine, 1);
                     }
                 }
             }
@@ -503,7 +565,9 @@ namespace tiles {
         }
 
         public getObstacle(col: number, row: number) {
-            const index = this._map.isOutsideMap(col, row) ? 0 : this._map.getTile(col, row);
+            const index = this._map.isOutsideMap(col, row)
+                ? 0
+                : this._map.getTile(col, row);
             const tile = this._map.getTileImage(index);
             return new sprites.StaticObstacle(
                 tile,
@@ -537,21 +601,34 @@ namespace tiles {
             return this.data.getTileImage(index);
         }
 
-        public addEventListener(event: TileMapEvent, handler: (data: TileMapData) => void) {
+        public addEventListener(
+            event: TileMapEvent,
+            handler: (data: TileMapData) => void
+        ) {
             if (!this.handlerState) this.handlerState = [];
 
             for (const eventHandler of this.handlerState) {
-                if (eventHandler.event === event && eventHandler.callback === handler) return;
+                if (
+                    eventHandler.event === event &&
+                    eventHandler.callback === handler
+                )
+                    return;
             }
             this.handlerState.push(new TileMapEventHandler(event, handler));
         }
 
-        public removeEventListener(event: TileMapEvent, handler: (data: TileMapData) => void) {
+        public removeEventListener(
+            event: TileMapEvent,
+            handler: (data: TileMapData) => void
+        ) {
             if (!this.handlerState) return;
 
             for (let i = 0; i < this.handlerState.length; i++) {
-                if (this.handlerState[i].event === event && this.handlerState[i].callback === handler) {
-                    this.handlerState.splice(i, 1)
+                if (
+                    this.handlerState[i].event === event &&
+                    this.handlerState[i].callback === handler
+                ) {
+                    this.handlerState.splice(i, 1);
                     return;
                 }
             }
@@ -559,7 +636,7 @@ namespace tiles {
     }
 
     function mkColorTile(index: number, scale: TileScale): Image {
-        const size = 1 << scale
+        const size = 1 << scale;
 
         const i = image.create(size, size);
         i.fill(index);
@@ -567,12 +644,19 @@ namespace tiles {
     }
 
     //% scale.defl="TileScale.Sixteen"
-    export function createTilemap(data: Buffer, layer: Image, tiles: Image[], scale: TileScale): TileMapData {
-        return new TileMapData(data, layer, tiles, scale)
+    export function createTilemap(
+        data: Buffer,
+        layer: Image,
+        tiles: Image[],
+        scale: TileScale
+    ): TileMapData {
+        return new TileMapData(data, layer, tiles, scale);
     }
 
     //% blockHidden=true
-	//% blockId=tilemap_editor block="set tilemap to $tilemap"
+    //% blockId=tilemap_editor block="set tilemap to $tilemap"
+    //% blockHidden=true
+    //% blockId=tilemap_editor block="set tilemap to $tilemap"
     //% weight=200 blockGap=8
     //% tilemap.fieldEditor="tilemap"
     //% tilemap.fieldOptions.decompileArgumentAsString="true"
@@ -591,7 +675,9 @@ namespace tiles {
      * @param tilemap The tilemap to set as the current tilemap
      */
     //% blockHidden=true
-	//% blockId=set_current_tilemap block="set tilemap to $tilemap"
+    //% blockId=set_current_tilemap block="set tilemap to $tilemap"
+    //% blockHidden=true
+    //% blockId=set_current_tilemap block="set tilemap to $tilemap"
     //% weight=201 blockGap=8
     //% tilemap.shadow=tiles_tilemap_editor
     //% blockNamespace="scene" group="Tilemaps" duplicateShadowOnDrag
@@ -606,7 +692,9 @@ namespace tiles {
      * @param tile
      */
     //% blockHidden=true
-	//% blockId=mapsettileat block="set $tile at $loc=mapgettile"
+    //% blockId=mapsettileat block="set $tile at $loc=mapgettile"
+    //% blockHidden=true
+    //% blockId=mapsettileat block="set $tile at $loc=mapgettile"
     //% tile.shadow=tileset_tile_picker
     //% tile.decompileIndirectFixedInstances=true
     //% blockNamespace="scene" group="Tilemap Operations" blockGap=8
@@ -626,7 +714,9 @@ namespace tiles {
      * @param on
      */
     //% blockHidden=true
-	//% blockId=mapsetwallat block="set wall $on at $loc"
+    //% blockId=mapsetwallat block="set wall $on at $loc"
+    //% blockHidden=true
+    //% blockId=mapsetwallat block="set wall $on at $loc"
     //% on.shadow=toggleOnOff loc.shadow=mapgettile
     //% blockNamespace="scene" group="Tilemap Operations"
     //% help=tiles/set-wall-at
@@ -644,7 +734,9 @@ namespace tiles {
      * @param row
      */
     //% blockHidden=true
-	//% blockId=mapgettile block="tilemap col $col row $row"
+    //% blockId=mapgettile block="tilemap col $col row $row"
+    //% blockHidden=true
+    //% blockId=mapgettile block="tilemap col $col row $row"
     //% blockNamespace="scene" group="Locations"
     //% weight=100 blockGap=8
     //% help=tiles/get-tile-location
@@ -670,8 +762,11 @@ namespace tiles {
      */
     export function getTileAt(col: number, row: number): Image {
         const scene = game.currentScene();
-        if (col == undefined || row == undefined || !scene.tileMap) return img``;
-        return scene.tileMap.getTileImage(tiles.getTileLocation(col, row).tileSet);
+        if (col == undefined || row == undefined || !scene.tileMap)
+            return img``;
+        return scene.tileMap.getTileImage(
+            tiles.getTileLocation(col, row).tileSet
+        );
     }
 
     /**
@@ -681,12 +776,17 @@ namespace tiles {
      * @param tile
      */
     //% blockHidden=true
-	//% blockId=maplocationistile block="tile at $location is $tile"
+    //% blockId=maplocationistile block="tile at $location is $tile"
+    //% blockHidden=true
+    //% blockId=maplocationistile block="tile at $location is $tile"
     //% location.shadow=mapgettile
     //% tile.shadow=tileset_tile_picker tile.decompileIndirectFixedInstances=true
     //% blockNamespace="scene" group="Locations" blockGap=8
     //% weight=40 help=tiles/tile-at-location-equals
-    export function tileAtLocationEquals(location: Location, tile: Image): boolean {
+    export function tileAtLocationEquals(
+        location: Location,
+        tile: Image
+    ): boolean {
         const scene = game.currentScene();
         if (!location || !tile || !scene.tileMap) return false;
         return location.tileSet === scene.tileMap.getImageType(tile);
@@ -698,7 +798,9 @@ namespace tiles {
      * @param location The location to check for a wall
      */
     //% blockHidden=true
-	//% blockId=tiles_tile_at_location_is_wall
+    //% blockId=tiles_tile_at_location_is_wall
+    //% blockHidden=true
+    //% blockId=tiles_tile_at_location_is_wall
     //% block="tile at $location is wall"
     //% location.shadow=mapgettile
     //% blockNamespace="scene" group="Locations" blockGap=8
@@ -714,7 +816,9 @@ namespace tiles {
      * @param location The location of the image to fetch
      */
     //% blockHidden=true
-	//% blockId=tiles_image_at_location
+    //% blockId=tiles_image_at_location
+    //% blockHidden=true
+    //% blockId=tiles_image_at_location
     //% block="tile image at $location"
     //% location.shadow=mapgettile
     //% weight=0 help=tiles/tile-image-at-location
@@ -731,7 +835,9 @@ namespace tiles {
      * @param loc
      */
     //% blockHidden=true
-	//% blockId=mapplaceontile block="place $sprite=variables_get(mySprite) on top of $loc"
+    //% blockId=mapplaceontile block="place $sprite=variables_get(mySprite) on top of $loc"
+    //% blockHidden=true
+    //% blockId=mapplaceontile block="place $sprite=variables_get(mySprite) on top of $loc"
     //% loc.shadow=mapgettile
     //% blockNamespace="scene" group="Tilemap Operations" blockGap=8
     //% help=tiles/place-on-tile
@@ -747,7 +853,9 @@ namespace tiles {
      * @param tile
      */
     //% blockHidden=true
-	//% blockId=mapplaceonrandomtile block="place $sprite=variables_get(mySprite) on top of random $tile"
+    //% blockId=mapplaceonrandomtile block="place $sprite=variables_get(mySprite) on top of random $tile"
+    //% blockHidden=true
+    //% blockId=mapplaceonrandomtile block="place $sprite=variables_get(mySprite) on top of random $tile"
     //% tile.shadow=tileset_tile_picker
     //% tile.decompileIndirectFixedInstances=true
     //% blockNamespace="scene" group="Tilemap Operations"
@@ -756,8 +864,7 @@ namespace tiles {
     export function placeOnRandomTile(sprite: Sprite, tile: Image): void {
         if (!sprite || !game.currentScene().tileMap) return;
         const loc = getRandomTileByType(tile);
-        if (loc)
-            loc.place(sprite);
+        if (loc) loc.place(sprite);
     }
 
     /**
@@ -765,7 +872,9 @@ namespace tiles {
      * @param tile
      */
     //% blockHidden=true
-	//% blockId=mapgettilestype block="array of all $tile locations"
+    //% blockId=mapgettilestype block="array of all $tile locations"
+    //% blockHidden=true
+    //% blockId=mapgettilestype block="array of all $tile locations"
     //% tile.shadow=tileset_tile_picker
     //% tile.decompileIndirectFixedInstances=true
     //% blockNamespace="scene" group="Locations" blockGap=8
@@ -784,8 +893,7 @@ namespace tiles {
      */
     export function getRandomTileByType(tile: Image): Location {
         const scene = game.currentScene();
-        if (!tile || !scene.tileMap)
-            return undefined;
+        if (!tile || !scene.tileMap) return undefined;
         const index = scene.tileMap.getImageType(tile);
         const sample = scene.tileMap.sampleTilesByType(index, 1);
         return sample[0];
@@ -795,7 +903,9 @@ namespace tiles {
      * A tilemap
      */
     //% blockHidden=true
-	//% blockId=tiles_tilemap_editor shim=TD_ID
+    //% blockId=tiles_tilemap_editor shim=TD_ID
+    //% blockHidden=true
+    //% blockId=tiles_tilemap_editor shim=TD_ID
     //% weight=200 blockGap=8
     //% block="tilemap $tilemap"
     //% tilemap.fieldEditor="tilemap"
@@ -817,7 +927,10 @@ namespace tiles {
      * @param event     The event to subscribe to
      * @param handler   The code to run when the event triggers
      */
-    export function addEventListener(event: TileMapEvent, callback: (data: TileMapData) => void) {
+    export function addEventListener(
+        event: TileMapEvent,
+        callback: (data: TileMapData) => void
+    ) {
         const scene = game.currentScene();
 
         if (!scene.tileMap) {
@@ -827,14 +940,16 @@ namespace tiles {
         scene.tileMap.addEventListener(event, callback);
     }
 
-
     /**
      * Removes an event handler registered with addEventListener.
      *
      * @param event     The event that the handler was registered for
      * @param handler   The handler to remove
      */
-    export function removeEventListener(event: TileMapEvent, callback: (data: TileMapData) => void) {
+    export function removeEventListener(
+        event: TileMapEvent,
+        callback: (data: TileMapData) => void
+    ) {
         const scene = game.currentScene();
 
         if (!scene.tileMap) return;

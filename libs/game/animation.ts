@@ -850,6 +850,7 @@ namespace animation {
     //% frames.fieldOptions.filter="!tile !dialog !background"
     //% weight=40
     //% group="Animate" duplicateShadowOnDrag
+    //% blockHidden=true gb.override
     //% help=animation/animation-frames
     //% blockHidden=true gb.override
     export function _animationFrames(frames: Image[]) {
