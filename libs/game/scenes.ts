@@ -20,6 +20,7 @@ enum CameraProperty {
 //% weight=88 color="#4b6584" icon="\uf1bb"
 //% groups='["Screen", "Camera", "Effects", "Tilemaps", "Tilemap Operations", "Locations"]'
 //% blockGap=8
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace scene {
     /**
      * Get the width of the screen in pixels
@@ -28,6 +29,7 @@ namespace scene {
     //% group="Screen"
     //% weight=100 blockGap=8
     //% help=scene/screen-width
+    //% blockHidden=true
     export function screenWidth(): number {
         return screen.width;
     }
@@ -39,6 +41,7 @@ namespace scene {
     //% group="Screen"
     //% weight=99
     //% help=scene/screen-width
+    //% blockHidden=true
     export function screenHeight(): number {
         return screen.height;
     }
@@ -51,6 +54,7 @@ namespace scene {
     //% weight=25
     //% blockId=gamesetbackgroundcolor block="set background color to %color=colorindexpicker"
     //% help=scene/set-background-color
+    //% blockHidden=true
     export function setBackgroundColor(color: number) {
         const scene = game.currentScene();
         scene.background.color = color;
@@ -64,6 +68,7 @@ namespace scene {
     //% weight=22
     //% blockId=gamebackgroundcolor block="background color"
     //% help=scene/background-color
+    //% blockHidden=true
     export function backgroundColor() : number {
         const scene = game.currentScene();
         return scene.background.color;
@@ -76,6 +81,7 @@ namespace scene {
     //% weight=24
     //% blockId=gamesetbackgroundimage block="set background image to %img=background_image_picker"
     //% help=scene/set-background-image
+    //% blockHidden=true
     export function setBackgroundImage(img: Image) {
         const scene = game.currentScene();
         scene.background.image = img;
@@ -88,6 +94,7 @@ namespace scene {
     //% group="Screen"
     //% blockId=gamebackgroundimage block="background image"
     //% help=scene/background-image
+    //% blockHidden=true
     export function backgroundImage(): Image {
         const scene = game.currentScene();
         return scene.background.image;
@@ -128,6 +135,7 @@ namespace scene {
     //% group="Camera"
     //% help=scene/camera-shake
     //% weight=90
+    //% blockHidden=true
     export function cameraShake(amplitude: number = 4, duration: number = 500) {
         const scene = game.currentScene();
         scene.camera.shake(amplitude, duration);
@@ -141,6 +149,7 @@ namespace scene {
     //% group="Camera"
     //% help=scene/camera-follow-sprite
     //% weight=100
+    //% blockHidden=true
     export function cameraFollowSprite(sprite: Sprite) {
         const scene = game.currentScene();
         scene.camera.sprite = sprite;
@@ -155,6 +164,7 @@ namespace scene {
     //% group="Camera"
     //% help=scene/center-camera-at
     //% weight=80
+    //% blockHidden=true
     export function centerCameraAt(x: number, y: number) {
         const scene = game.currentScene();
         scene.camera.sprite = undefined;
@@ -169,6 +179,7 @@ namespace scene {
     //% group="Camera"
     //% help=scene/camera-left
     //% deprecated=true
+    //% blockHidden=true
     export function cameraLeft() {
         const scene = game.currentScene();
         return scene.camera.drawOffsetX;
@@ -181,6 +192,7 @@ namespace scene {
     //% group="Camera"
     //% help=scene/camera-top
     //% deprecated=true
+    //% blockHidden=true
     export function cameraTop() {
         const scene = game.currentScene();
         return scene.camera.drawOffsetY;
@@ -194,6 +206,7 @@ namespace scene {
     //% group="Camera"
     //% help=scene/camera-property
     //% weight=70
+    //% blockHidden=true
     export function cameraProperty(property: CameraProperty): number {
         const scene = game.currentScene();
         if (!scene.camera.isUpdated())

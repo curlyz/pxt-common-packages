@@ -1,5 +1,6 @@
 // Auto-generated. Do not edit.
-declare namespace gamepad {
+declare //% blockHidden=true //gb.override: hide the irrelevant block
+namespace gamepad {
 
     /** 
      * Set the button state to down
@@ -7,6 +8,7 @@ declare namespace gamepad {
     //% help=gamepad/set-button
     //% blockId=joystickSetButton block="gamepad button %index=joystickStandardButton|%down=toggleDownUp"
     //% weight=100 shim=gamepad::setButton
+    //% blockHidden=true
     function setButton(index: int32, down: boolean): void;
 
     /**
@@ -16,6 +18,7 @@ declare namespace gamepad {
     //% help=gamepad/move
     //% index.min=0 index.max=1
     //% blockGap=8 shim=gamepad::move
+    //% blockHidden=true
     function move(index: int32, x: int32, y: int32): void;
 
     /** 
@@ -26,6 +29,7 @@ declare namespace gamepad {
     //% index.min=0 index.max=1
     //% value.min=0 value.max=31
     //%help=gamepad/set-throttle shim=gamepad::setThrottle
+    //% blockHidden=true
     function setThrottle(index: int32, value: int32): void;
 }
 

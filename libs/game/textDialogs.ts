@@ -13,6 +13,7 @@ enum DialogLayout {
     Full
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace game {
     function padStr(len: number): string {
         let str = "";
@@ -643,7 +644,8 @@ namespace game {
      * @param str The text to display
      * @param layout The layout to use for the dialog box
      */
-    //% blockId=game_show_long_text group="Dialogs"
+    //% blockHidden=true
+	//% blockId=game_show_long_text group="Dialogs"
     //% block="show long text %str %layout"
     //% str.shadow=text
     //% help=game/show-long-text
@@ -816,7 +818,8 @@ namespace game {
      *
      * @param frame A square image with a width and height divisible by three
      */
-    //% blockId=game_dialog_set_frame group="Dialogs"
+    //% blockHidden=true
+	//% blockId=game_dialog_set_frame group="Dialogs"
     //% block="set dialog frame to %frame=dialog_image_picker"
     //% help=game/set-dialog-frame
     export function setDialogFrame(frame: Image) {
@@ -829,7 +832,8 @@ namespace game {
      *
      * @param cursor The image to use for the cursor
      */
-    //% blockId=game_dialog_set_cursor group="Dialogs"
+    //% blockHidden=true
+	//% blockId=game_dialog_set_cursor group="Dialogs"
     //% block="set dialog cursor to %frame=screen_image_picker"
     //% help=game/set-dialog-cursor
     export function setDialogCursor(cursor: Image) {
@@ -841,7 +845,8 @@ namespace game {
      *
      * @param color The index of the color 0-15
      */
-    //% blockId=game_dialog_set_text_color group="Dialogs"
+    //% blockHidden=true
+	//% blockId=game_dialog_set_text_color group="Dialogs"
     //% block="set dialog text color to %color=colorindexpicker"
     //% help=game/set-dialog-text-color
     export function setDialogTextColor(color: number) {
@@ -859,7 +864,8 @@ namespace game {
      * @param subtitle
      */
     //% weight=90 help=game/splash
-    //% blockId=gameSplash block="splash %title||%subtitle"
+    //% blockHidden=true
+	//% blockId=gameSplash block="splash %title||%subtitle"
     //% title.shadow=text
     //% subtitle.shadow=text
     //% group="Prompt"

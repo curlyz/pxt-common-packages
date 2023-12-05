@@ -14,6 +14,7 @@ Frame handlers:
  */
 //% weight=99 color="#4B7BEC" icon="\uf1d8"
 //% groups='["Create", "Physics", "Effects", "Projectiles", "Overlaps", "Lifecycle"]'
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace sprites {
     export class FollowingSprite {
         constructor(
@@ -21,13 +22,14 @@ namespace sprites {
             public target: Sprite,
             public rate: number,
             public turnRate: number
-        ) { }
+        ) {}
     }
 
     /**
      * Create a new sprite from an image
      * @param img the image
      */
+    //% blockHidden=true
     //% group="Create"
     //% blockId=spritescreate block="sprite %img=screen_image_picker of kind %kind=spritekind"
     //% expandableArgumentMode=toggle
@@ -35,7 +37,7 @@ namespace sprites {
     //% weight=100 help=sprites/create
     export function create(img: Image, kind?: number): Sprite {
         const scene = game.currentScene();
-        const sprite = new Sprite(img)
+        const sprite = new Sprite(img);
         sprite.setKind(kind);
         scene.physicsEngine.addSprite(sprite);
 
@@ -44,13 +46,14 @@ namespace sprites {
             .filter(h => h.kind == kind)
             .forEach(h => h.handler(sprite));
 
-        return sprite
+        return sprite;
     }
 
     /**
      * Create a new sprite from an image
      * @param img the image
      */
+    //% blockHidden=true
     //% group="Create"
     //% blockId=spritescreatenoset block="sprite %img=screen_image_picker of kind %kind=spritekind"
     //% blockAliasFor="sprites.create"
@@ -60,6 +63,7 @@ namespace sprites {
         return sprites.create(img, kind);
     }
 
+    //% blockHidden=true
     //% group="Effects"
     //% weight=80
     //% blockId=spritedestroy2 block="destroy $sprite || with $effect effect for $duration ms"
@@ -68,7 +72,11 @@ namespace sprites {
     //% duration.shadow=timePicker
     //% expandableArgumentMode="toggle"
     //% help=sprites/sprite/destroy
-    export function destroy(sprite: Sprite, effect?: effects.ParticleEffect, duration?: number) {
+    export function destroy(
+        sprite: Sprite,
+        effect?: effects.ParticleEffect,
+        duration?: number
+    ) {
         if (!sprite) return;
         sprite.destroy(effect, duration);
     }
@@ -79,6 +87,7 @@ namespace sprites {
      */
     //% blockId=allOfKind block="array of sprites of kind %kind=spritekind"
     //% weight=87 help=sprites/all-of-kind
+    //% blockHidden=true
     export function allOfKind(kind: number): Sprite[] {
         const spritesByKind = game.currentScene().spritesByKind;
         if (!(kind >= 0) || !spritesByKind[kind]) return [];
@@ -88,6 +97,7 @@ namespace sprites {
     /**
      * Destroys all sprites of the given kind.
      */
+    //% blockHidden=true
     //% group="Effects"
     //% weight=79 help=sprites/destroy-all-sprites-of-kind
     //% blockId=sprites_destroy_all_sprites_of_kind
@@ -95,7 +105,11 @@ namespace sprites {
     //% kind.shadow=spritekind
     //% duration.shadow=timePicker
     //% expandableArgumentMode="toggle"
-    export function destroyAllSpritesOfKind(kind: number, effect?: effects.ParticleEffect, duration?: number) {
+    export function destroyAllSpritesOfKind(
+        kind: number,
+        effect?: effects.ParticleEffect,
+        duration?: number
+    ) {
         for (const sprite of allOfKind(kind)) {
             sprite.destroy(effect, duration);
         }
@@ -105,6 +119,7 @@ namespace sprites {
      * Create a new sprite with a given speed, and place it at the edge of the screen so it moves towards the middle.
      * The sprite auto-destroys when it leaves the screen. You can modify position after it's created.
      */
+    //% blockHidden=true
     //% group="Projectiles"
     //% blockId=spritescreateprojectilefromside block="projectile %img=screen_image_picker from side with vx %vx vy %vy"
     //% vx.shadow=spriteSpeedPicker
@@ -112,7 +127,11 @@ namespace sprites {
     //% weight=99 help=sprites/create-projectile-from-side
     //% blockSetVariable=projectile
     //% inlineInputMode=inline
-    export function createProjectileFromSide(img: Image, vx: number, vy: number) {
+    export function createProjectileFromSide(
+        img: Image,
+        vx: number,
+        vy: number
+    ) {
         return createProjectile(img, vx, vy, SpriteKind.Projectile);
     }
 
@@ -120,6 +139,7 @@ namespace sprites {
      * Create a new sprite with a given speed that starts from the location of another sprite.
      * The sprite auto-destroys when it leaves the screen. You can modify position after it's created.
      */
+    //% blockHidden=true
     //% group="Projectiles"
     //% blockId=spritescreateprojectilefromsprite block="projectile %img=screen_image_picker from %sprite=variables_get(mySprite) with vx %vx vy %vy"
     //% vx.shadow=spriteSpeedPicker
@@ -127,7 +147,12 @@ namespace sprites {
     //% weight=99 help=sprites/create-projectile-from-sprite
     //% blockSetVariable=projectile
     //% inlineInputMode=inline
-    export function createProjectileFromSprite(img: Image, sprite: Sprite, vx: number, vy: number): Sprite {
+    export function createProjectileFromSprite(
+        img: Image,
+        sprite: Sprite,
+        vx: number,
+        vy: number
+    ): Sprite {
         return createProjectile(img, vx, vy, SpriteKind.Projectile, sprite);
     }
 
@@ -135,6 +160,7 @@ namespace sprites {
      * Create a new sprite with given speed, and place it at the edge of the screen so it moves towards the middle.
      * The sprite auto-destroys when it leaves the screen. You can modify position after it's created.
      */
+    //% blockHidden=true
     //% group="Projectiles"
     //% blockId=spritescreateprojectile block="projectile %img=screen_image_picker vx %vx vy %vy of kind %kind=spritekind||from sprite %sprite=variables_get(mySprite)"
     //% weight=99 help=sprites/create-projectile
@@ -142,7 +168,13 @@ namespace sprites {
     //% inlineInputMode=inline
     //% expandableArgumentMode=toggle
     //% deprecated=true blockHidden=true
-    export function createProjectile(img: Image, vx: number, vy: number, kind?: number, sprite?: Sprite) {
+    export function createProjectile(
+        img: Image,
+        vx: number,
+        vy: number,
+        kind?: number,
+        sprite?: Sprite
+    ) {
         const s = sprites.create(img, kind || SpriteKind.Projectile);
         const sc = game.currentScene();
 
@@ -197,6 +229,8 @@ namespace sprites {
         GhostThroughWalls = 1 << 11, // No collisions with walls
         GhostThroughSprites = 1 << 12, // No overlaps with other sprites
         HitboxOverlaps = 1 << 13, // If set, overlaps with this sprite are based off of both sprites' hitboxes and not pixel perfect
-        Ghost = sprites.Flag.GhostThroughSprites | sprites.Flag.GhostThroughWalls | sprites.Flag.GhostThroughTiles, // doesn't collide with other sprites or walls
+        Ghost = sprites.Flag.GhostThroughSprites |
+            sprites.Flag.GhostThroughWalls |
+            sprites.Flag.GhostThroughTiles, // doesn't collide with other sprites or walls
     }
 }

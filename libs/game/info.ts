@@ -1,13 +1,12 @@
-
 /**
  * Head-up display
  *
-*/
+ */
 //% color=#cf6a87 weight=80 icon="\uf2bb" blockGap=8
 //% groups='["Score", "Life", "Countdown", "Multiplayer"]'
-//% blockGap=8
+//% blockGap=8 advance=true
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace info {
-
     export enum Visibility {
         None = 0,
         Countdown = 1 << 0,
@@ -88,8 +87,8 @@ namespace info {
     let players: PlayerInfo[];
 
     let infoStateStack: {
-        state: InfoState,
-        scene: scene.Scene
+        state: InfoState;
+        scene: scene.Scene;
     }[];
 
     game.addScenePushHandler(oldScene => {
@@ -97,7 +96,7 @@ namespace info {
             if (!infoStateStack) infoStateStack = [];
             infoStateStack.push({
                 state: infoState,
-                scene: oldScene
+                scene: oldScene,
             });
             infoState = undefined;
         }
@@ -121,55 +120,62 @@ namespace info {
 
         infoState = new InfoState();
 
-        scene.createRenderable(
-            scene.HUD_Z,
-            () => {
-                if (!infoState) return;
-                control.enablePerfCounter("info")
-                // show score, lifes
-                if (infoState.visibilityFlag & Visibility.Multi) {
-                    const ps = players.filter(p => !!p);
-                    // First draw players
-                    ps.forEach(p => p.drawPlayer());
-                    // Then run life over events
-                    ps.forEach(p => p.impl.raiseLifeZero(false));
-                } else { // single player
-                    // show score
-                    const p = player1;
-                    if (p.impl.hasScore() && (infoState.visibilityFlag & Visibility.Score)) {
-                        p.drawScore();
-                    }
-                    // show life
-                    if (p.impl.hasLife() && (infoState.visibilityFlag & Visibility.Life)) {
-                        p.drawLives();
-                    }
-                    p.impl.raiseLifeZero(true);
+        scene.createRenderable(scene.HUD_Z, () => {
+            if (!infoState) return;
+            control.enablePerfCounter("info");
+            // show score, lifes
+            if (infoState.visibilityFlag & Visibility.Multi) {
+                const ps = players.filter(p => !!p);
+                // First draw players
+                ps.forEach(p => p.drawPlayer());
+                // Then run life over events
+                ps.forEach(p => p.impl.raiseLifeZero(false));
+            } else {
+                // single player
+                // show score
+                const p = player1;
+                if (
+                    p.impl.hasScore() &&
+                    infoState.visibilityFlag & Visibility.Score
+                ) {
+                    p.drawScore();
                 }
-                // show countdown in both modes
-                if (infoState.gameEnd !== undefined && infoState.visibilityFlag & Visibility.Countdown) {
-                    const scene = game.currentScene();
-                    const elapsed = infoState.gameEnd - scene.millis();
-                    drawTimer(elapsed);
-                    let t = elapsed / 1000;
-                    if (t <= 0) {
-                        t = 0;
-                        if (!infoState.countdownExpired) {
-                            infoState.countdownExpired = true;
-                            infoState.gameEnd = undefined;
-                            if (infoState.countdownEndHandler) {
-                                infoState.countdownEndHandler();
-                            } else {
-                                // Clear effect and sound, unless set by user
-                                const goc = game.gameOverConfig();
-                                goc.setEffect(false, null, false);
-                                goc.setSound(false, null, false, false);
-                                game.gameOver(false);
-                            }
+                // show life
+                if (
+                    p.impl.hasLife() &&
+                    infoState.visibilityFlag & Visibility.Life
+                ) {
+                    p.drawLives();
+                }
+                p.impl.raiseLifeZero(true);
+            }
+            // show countdown in both modes
+            if (
+                infoState.gameEnd !== undefined &&
+                infoState.visibilityFlag & Visibility.Countdown
+            ) {
+                const scene = game.currentScene();
+                const elapsed = infoState.gameEnd - scene.millis();
+                drawTimer(elapsed);
+                let t = elapsed / 1000;
+                if (t <= 0) {
+                    t = 0;
+                    if (!infoState.countdownExpired) {
+                        infoState.countdownExpired = true;
+                        infoState.gameEnd = undefined;
+                        if (infoState.countdownEndHandler) {
+                            infoState.countdownEndHandler();
+                        } else {
+                            // Clear effect and sound, unless set by user
+                            const goc = game.gameOverConfig();
+                            goc.setEffect(false, null, false);
+                            goc.setSound(false, null, false, false);
+                            game.gameOver(false);
                         }
                     }
                 }
             }
-        );
+        });
     }
 
     function initMultiHUD() {
@@ -186,8 +192,8 @@ namespace info {
     }
 
     function defaultHeartImage() {
-        return screen.isMono ?
-            img`
+        return screen.isMono
+            ? img`
                 . 1 1 . 1 1 . .
                 1 . . 1 . . 1 .
                 1 . . . . . 1 .
@@ -196,8 +202,7 @@ namespace info {
                 . . 1 . 1 . . .
                 . . . 1 . . . .
             `
-            :
-            img`
+            : img`
                 . c 2 2 . 2 2 .
                 c 2 2 2 2 2 4 2
                 c 2 2 2 2 4 2 2
@@ -209,16 +214,15 @@ namespace info {
     }
 
     function defaultMultiplayerHeartImage() {
-        return screen.isMono ?
-            img`
+        return screen.isMono
+            ? img`
                     . . 1 . 1 . .
                     . 1 . 1 . 1 .
                     . 1 . . . 1 .
                     . . 1 . 1 . .
                     . . . 1 . . .
                 `
-            :
-            img`
+            : img`
                     . . 1 . 1 . .
                     . 1 2 1 4 1 .
                     . 1 2 4 2 1 .
@@ -247,15 +251,14 @@ namespace info {
         const pws = playersWithScores();
         if (pws) {
             allScores = pws.map(item => item.impl.score());
-        }
-        else {
+        } else {
             allScores = [];
         }
 
         const scoresObj = {
-            "allScores": allScores,
-            "scoringType": allScores.length ? scoringType : "None"
-        }
+            allScores: allScores,
+            scoringType: allScores.length ? scoringType : "None",
+        };
 
         settings.writeJSON(allScoresKey, scoresObj);
     }
@@ -277,7 +280,10 @@ namespace info {
         return winner;
     }
 
-    export function isBetterScore(newScore: number, prevScore: number): boolean {
+    export function isBetterScore(
+        newScore: number,
+        prevScore: number
+    ): boolean {
         const goc = game.gameOverConfig();
         switch (goc.scoringType) {
             case game.ScoringType.HighScore: {
@@ -305,15 +311,19 @@ namespace info {
      * Get the current score if any
      */
     //% weight=95 blockGap=8
+    //% blockHidden=true
     //% blockId=hudScore block="score"
     //% help=info/score
     //% group="Score"
+    //% advance=true
+    //% blockHidden=true
     export function score() {
         return player1.impl.score();
     }
 
     //%
     //% group="Score"
+    //% blockHidden=true
     export function hasScore() {
         return player1.impl.hasScore();
     }
@@ -322,9 +332,12 @@ namespace info {
      * Get the last recorded high score
      */
     //% weight=94
+    //% blockHidden=true
     //% blockId=highScore block="high score"
     //% help=info/high-score
     //% group="Score"
+    //% advance=true
+    //% blockHidden=true
     export function highScore(): number {
         return settings.readNumber("high-score") || 0;
     }
@@ -333,9 +346,12 @@ namespace info {
      * Set the score
      */
     //% weight=93 blockGap=8
+    //% blockHidden=true
     //% blockId=hudsetScore block="set score to %value"
     //% help=info/set-score
     //% group="Score"
+    //% advance=true
+    //% blockHidden=true
     export function setScore(value: number) {
         player1.impl.setScore(value);
     }
@@ -345,9 +361,12 @@ namespace info {
      * @param value the amount of change, eg: 1
      */
     //% weight=92
+    //% blockHidden=true
     //% blockId=hudChangeScoreBy block="change score by %value"
     //% help=info/change-score-by
     //% group="Score"
+    //% advance=true
+    //% blockHidden=true
     export function changeScoreBy(value: number) {
         player1.impl.changeScoreBy(value);
     }
@@ -356,14 +375,19 @@ namespace info {
      * Get the number of lives
      */
     //% weight=85 blockGap=8
+    //% blockHidden=true
     //% blockId=hudLife block="life"
     //% help=info/life
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function life() {
         return player1.impl.life();
     }
 
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function hasLife() {
         return player1.impl.hasLife();
     }
@@ -373,9 +397,12 @@ namespace info {
      * @param value the number of lives, eg: 3
      */
     //% weight=84 blockGap=8
+    //% blockHidden=true
     //% blockId=hudSetLife block="set life to %value"
     //% help=info/set-life
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function setLife(value: number) {
         player1.impl.setLife(value);
     }
@@ -385,9 +412,12 @@ namespace info {
      * @param value the change of lives, eg: -1
      */
     //% weight=83
+    //% blockHidden=true
     //% blockId=hudChangeLifeBy block="change life by %value"
     //% help=info/change-life-by
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function changeLifeBy(value: number) {
         player1.impl.changeLifeBy(value);
     }
@@ -397,9 +427,12 @@ namespace info {
      * is not called then game.over() is called instead
      */
     //% weight=82
+    //% blockHidden=true
     //% blockId=gamelifeevent block="on life zero"
     //% help=info/on-life-zero
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function onLifeZero(handler: () => void) {
         player1.impl.onLifeZero(handler);
     }
@@ -413,11 +446,14 @@ namespace info {
      * @param handler code to run when the score reaches the given value
      */
     //% weight=10
+    //% blockHidden=true
     //% blockId=gameonscore
     //% block="on score $score"
     //% score.defl=100
     //% help=info/on-score
     //% group="Score"
+    //% advance=true
+    //% blockHidden=true
     export function onScore(score: number, handler: () => void) {
         player1.impl.onScore(score, handler);
     }
@@ -426,21 +462,29 @@ namespace info {
      * Get the value of the current count down
      */
     //% block="countdown"
+    //% blockHidden=true
     //% blockId=gamegetcountdown
     //% weight=79 help=info/countdown
     //% group="Countdown"
+    //% advance=true
+    //% blockHidden=true
     export function countdown(): number {
         initHUD();
-        return infoState.gameEnd ? ((infoState.gameEnd - game.currentScene().millis()) / 1000) : 0;
+        return infoState.gameEnd
+            ? (infoState.gameEnd - game.currentScene().millis()) / 1000
+            : 0;
     }
 
     /**
      * Start a countdown of the given duration in seconds
      * @param duration the duration of the countdown, eg: 10
      */
+    //% blockHidden=true
     //% blockId=gamecountdown block="start countdown %duration (s)"
     //% help=info/start-countdown weight=78 blockGap=8
     //% group="Countdown"
+    //% advance=true
+    //% blockHidden=true
     export function startCountdown(duration: number) {
         updateFlag(Visibility.Countdown, true);
         infoState.gameEnd = game.currentScene().millis() + duration * 1000;
@@ -452,19 +496,25 @@ namespace info {
      * @param seconds the number of seconds the countdown should be changed by
      */
     //% block="change countdown by $seconds (s)"
+    //% blockHidden=true
     //% blockId=gamechangecountdown
     //% weight=77 help=info/change-countdown-by
     //% group="Countdown"
+    //% advance=true
+    //% blockHidden=true
     export function changeCountdownBy(seconds: number) {
-        startCountdown((countdown() + seconds));
+        startCountdown(countdown() + seconds);
     }
 
     /**
      * Stop the current countdown and hides the timer display
      */
+    //% blockHidden=true
     //% blockId=gamestopcountdown block="stop countdown" weight=76
     //% help=info/stop-countdown
     //% group="Countdown"
+    //% advance=true
+    //% blockHidden=true
     export function stopCountdown() {
         updateFlag(Visibility.Countdown, false);
         infoState.gameEnd = undefined;
@@ -475,9 +525,12 @@ namespace info {
      * Run code when the countdown reaches 0. If this function
      * is not called then game.over() is called instead
      */
+    //% blockHidden=true
     //% blockId=gamecountdownevent block="on countdown end" weight=75
     //% help=info/on-countdown-end
     //% group="Countdown"
+    //% advance=true
+    //% blockHidden=true
     export function onCountdownEnd(handler: () => void) {
         initHUD();
         infoState.countdownEndHandler = handler;
@@ -488,6 +541,8 @@ namespace info {
      * should be no larger than 8x8
      */
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function setLifeImage(image: Image) {
         updateFlag(Visibility.UserHeartImage, true);
         infoState.heartImage = image;
@@ -498,6 +553,8 @@ namespace info {
      * @param on if true, lives are shown; otherwise, lives are hidden
      */
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function showLife(on: boolean) {
         updateFlag(Visibility.Life, on);
         updateFlag(Visibility._ExplicitlySetLife, true);
@@ -508,6 +565,8 @@ namespace info {
      * @param on if true, score is shown; otherwise, score is hidden
      */
     //% group="Score"
+    //% advance=true
+    //% blockHidden=true
     export function showScore(on: boolean) {
         updateFlag(Visibility.Score, on);
         updateFlag(Visibility._ExplicitlySetScore, true);
@@ -518,6 +577,8 @@ namespace info {
      * @param on if true, countdown is shown; otherwise, countdown is hidden
      */
     //% group="Countdown"
+    //% advance=true
+    //% blockHidden=true
     export function showCountdown(on: boolean) {
         updateFlag(Visibility.Countdown, on);
     }
@@ -534,6 +595,8 @@ namespace info {
      * @param color The index of the color (0-15)
      */
     //% group="Theme"
+    //% advance=true
+    //% blockHidden=true
     export function setBorderColor(color: number) {
         initHUD();
         infoState.borderColor = Math.min(Math.max(color, 0), 15) | 0;
@@ -545,6 +608,8 @@ namespace info {
      * @param color The index of the color (0-15)
      */
     //% group="Theme"
+    //% advance=true
+    //% blockHidden=true
     export function setBackgroundColor(color: number) {
         initHUD();
         infoState.bgColor = Math.min(Math.max(color, 0), 15) | 0;
@@ -556,6 +621,8 @@ namespace info {
      * @param color The index of the color (0-15)
      */
     //% group="Theme"
+    //% advance=true
+    //% blockHidden=true
     export function setFontColor(color: number) {
         initHUD();
         infoState.fontColor = Math.min(Math.max(color, 0), 15) | 0;
@@ -566,6 +633,8 @@ namespace info {
      * elements
      */
     //% group="Theme"
+    //% advance=true
+    //% blockHidden=true
     export function borderColor(): number {
         initHUD();
         return infoState.borderColor ? infoState.borderColor : 3;
@@ -576,6 +645,8 @@ namespace info {
      * elements
      */
     //% group="Theme"
+    //% advance=true
+    //% blockHidden=true
     export function backgroundColor(): number {
         initHUD();
         return infoState.bgColor ? infoState.bgColor : 1;
@@ -586,6 +657,8 @@ namespace info {
      * elements
      */
     //% group="Theme"
+    //% advance=true
+    //% blockHidden=true
     export function fontColor(): number {
         initHUD();
         return infoState.fontColor ? infoState.fontColor : 3;
@@ -603,28 +676,44 @@ namespace info {
         let color1 = infoState.fontColor;
         let color2 = infoState.bgColor;
 
-        if (seconds < 10 && (seconds & 1) && !screen.isMono) {
+        if (seconds < 10 && seconds & 1 && !screen.isMono) {
             const temp = color1;
             color1 = color2;
             color2 = temp;
         }
 
-        screen.fillRect(left - 3, 0, width + 6, font.charHeight + 3, infoState.borderColor)
-        screen.fillRect(left - 2, 0, width + 4, font.charHeight + 2, color2)
-
+        screen.fillRect(
+            left - 3,
+            0,
+            width + 6,
+            font.charHeight + 3,
+            infoState.borderColor
+        );
+        screen.fillRect(left - 2, 0, width + 4, font.charHeight + 2, color2);
 
         if (seconds < 60) {
             const top = 1;
             const remainder = Math.idiv(millis % 1000, 10);
 
-            screen.print(formatDecimal(seconds) + ".", left, top, color1, font)
+            screen.print(formatDecimal(seconds) + ".", left, top, color1, font);
             const decimalLeft = left + 3 * font.charWidth;
-            screen.print(formatDecimal(remainder), decimalLeft, top + 2, color1, smallFont)
-        }
-        else {
+            screen.print(
+                formatDecimal(remainder),
+                decimalLeft,
+                top + 2,
+                color1,
+                smallFont
+            );
+        } else {
             const minutes = Math.idiv(seconds, 60);
             const remainder = seconds % 60;
-            screen.print(formatDecimal(minutes) + ":" + formatDecimal(remainder), left, 1, color1, font);
+            screen.print(
+                formatDecimal(minutes) + ":" + formatDecimal(remainder),
+                left,
+                1,
+                color1,
+                font
+            );
         }
     }
 
@@ -701,8 +790,7 @@ namespace info {
             if (state.showScore === undefined) state.showScore = true;
             if (state.showPlayer === undefined) state.showPlayer = true;
 
-            if (state.score == null)
-                state.score = 0;
+            if (state.score == null) state.score = 0;
             return state.score;
         }
 
@@ -715,11 +803,13 @@ namespace info {
             this.score(); // invoked for side effects
 
             const oldScore = state.score || 0;
-            state.score = (value | 0);
+            state.score = value | 0;
 
             state.scoreReachedHandlers.forEach(srh => {
-                if ((oldScore < srh.score && state.score >= srh.score) ||
-                    (oldScore > srh.score && state.score <= srh.score)) {
+                if (
+                    (oldScore < srh.score && state.score >= srh.score) ||
+                    (oldScore > srh.score && state.score <= srh.score)
+                ) {
                     srh.handler();
                 }
             });
@@ -753,7 +843,7 @@ namespace info {
             }
 
             this.life(); // invoked for side effects
-            state.life = (value | 0);
+            state.life = value | 0;
         }
 
         changeLifeBy(value: number): void {
@@ -781,7 +871,9 @@ namespace info {
                 }
             }
 
-            state.scoreReachedHandlers.push(new ScoreReachedHandler(score, handler));
+            state.scoreReachedHandlers.push(
+                new ScoreReachedHandler(score, handler)
+            );
         }
 
         raiseLifeZero(gameOver: boolean) {
@@ -803,6 +895,8 @@ namespace info {
 
     //% fixedInstances
     //% blockGap=8
+    //% advance=true
+    //% blockHidden=true
     export class PlayerInfo {
         protected _player: number;
         public impl: PlayerInfoImpl;
@@ -932,6 +1026,7 @@ namespace info {
          * Get the player score
          */
         //% group="Multiplayer"
+        //% blockHidden=true
         //% blockId=piscore block="%player score"
         //% help=info/score
         //% parts="multiplayer"
@@ -943,6 +1038,7 @@ namespace info {
          * Set the player score
          */
         //% group="Multiplayer"
+        //% blockHidden=true
         //% blockId=pisetscore block="set %player score to %value"
         //% value.defl=0
         //% help=info/set-score
@@ -956,6 +1052,7 @@ namespace info {
          * @param value
          */
         //% group="Multiplayer"
+        //% blockHidden=true
         //% blockId=pichangescore block="change %player score by %value"
         //% value.defl=1
         //% help=info/change-score-by
@@ -972,7 +1069,8 @@ namespace info {
          * Get the player life
          */
         //% group="Multiplayer"
-        //% blockid=piflife block="%player life"
+        //% blockHidden=true
+        //% blockId=piflife block="%player life"
         //% help=info/life
         //% parts="multiplayer"
         life(): number {
@@ -983,6 +1081,7 @@ namespace info {
          * Set the player life
          */
         //% group="Multiplayer"
+        //% blockHidden=true
         //% blockId=pisetlife block="set %player life to %value"
         //% value.defl=3
         //% help=info/set-life
@@ -996,6 +1095,7 @@ namespace info {
          * @param value
          */
         //% group="Multiplayer"
+        //% blockHidden=true
         //% blockId=pichangelife block="change %player life by %value"
         //% value.defl=-1
         //% help=info/change-life-by
@@ -1010,6 +1110,7 @@ namespace info {
          * @param player player to check life of
          */
         //% group="Multiplayer"
+        //% blockHidden=true
         //% blockId=pihaslife block="%player has life"
         //% help=info/has-life
         //% parts="multiplayer"
@@ -1022,6 +1123,7 @@ namespace info {
          * @param handler
          */
         //% group="Multiplayer"
+        //% blockHidden=true
         //% blockId=playerinfoonlifezero block="on %player life zero"
         //% help=info/on-life-zero
         //% parts="multiplayer"
@@ -1037,6 +1139,7 @@ namespace info {
          * @param score the score to fire the event on
          * @param handler code to run when the score reaches the given value
          */
+        //% blockHidden=true
         //% blockId=playerinfoonscore
         //% block="on $this score $score"
         //% score.defl=100
@@ -1070,7 +1173,11 @@ namespace info {
 
             if (showLife) {
                 life = "" + (state.life || 0);
-                lifeWidth = infoState.heartImage.width + infoState.multiplierImage.width + life.length * font.charWidth + 3;
+                lifeWidth =
+                    infoState.heartImage.width +
+                    infoState.multiplierImage.width +
+                    life.length * font.charWidth +
+                    3;
                 height += infoState.heartImage.height;
             }
 
@@ -1085,18 +1192,31 @@ namespace info {
             // Bordered Box
             if (showScore || showLife) {
                 screen.fillRect(x, y, width, height, this.impl.border);
-                screen.fillRect(x + 1, y + 1, width - 2, height - 2, this.impl.bg);
+                screen.fillRect(
+                    x + 1,
+                    y + 1,
+                    width - 2,
+                    height - 2,
+                    this.impl.bg
+                );
             }
 
             // print score
             if (showScore) {
                 const bump = this.impl.left ? width - scoreWidth : 0;
-                screen.print(score, x + offsetX + bump + 1, y + 2, this.impl.fc, font);
+                screen.print(
+                    score,
+                    x + offsetX + bump + 1,
+                    y + 2,
+                    this.impl.fc,
+                    font
+                );
             }
 
             // print life
             if (showLife) {
-                const xLoc = x + offsetX + (this.impl.left ? width - lifeWidth : 0);
+                const xLoc =
+                    x + offsetX + (this.impl.left ? width - lifeWidth : 0);
 
                 let mult = infoState.multiplierImage.clone();
                 mult.replace(1, this.impl.fc);
@@ -1109,11 +1229,18 @@ namespace info {
                 screen.drawTransparentImage(
                     mult,
                     xLoc + infoState.heartImage.width,
-                    y + offsetY + font.charHeight - infoState.multiplierImage.height - 1
+                    y +
+                        offsetY +
+                        font.charHeight -
+                        infoState.multiplierImage.height -
+                        1
                 );
                 screen.print(
                     life,
-                    xLoc + infoState.heartImage.width + infoState.multiplierImage.width + 1,
+                    xLoc +
+                        infoState.heartImage.width +
+                        infoState.multiplierImage.width +
+                        1,
                     y + offsetY,
                     this.impl.fc,
                     font
@@ -1126,7 +1253,7 @@ namespace info {
 
                 let iconWidth = pNum.length * font.charWidth + 1;
                 const iconHeight = Math.max(height, font.charHeight + 2);
-                let iconX = this.impl.left ? (x - iconWidth + 1) : (x + width - 1);
+                let iconX = this.impl.left ? x - iconWidth + 1 : x + width - 1;
                 let iconY = y;
 
                 // adjustments when only player icon shown
@@ -1160,8 +1287,7 @@ namespace info {
             if (s >= 1000000) {
                 offsetY = 2;
                 font = image.font5;
-            }
-            else {
+            } else {
                 offsetY = 1;
                 font = image.font8;
             }
@@ -1218,29 +1344,30 @@ namespace info {
                         1
                     );
                 }
-            }
-            else {
+            } else {
                 const num = state.life + "";
                 const textWidth = num.length * font.charWidth - 1;
                 screen.fillRect(
                     0,
                     0,
-                    infoState.heartImage.width + infoState.multiplierImage.width + textWidth + 5,
+                    infoState.heartImage.width +
+                        infoState.multiplierImage.width +
+                        textWidth +
+                        5,
                     infoState.heartImage.height + 4,
                     infoState.borderColor
                 );
                 screen.fillRect(
                     0,
                     0,
-                    infoState.heartImage.width + infoState.multiplierImage.width + textWidth + 4,
+                    infoState.heartImage.width +
+                        infoState.multiplierImage.width +
+                        textWidth +
+                        4,
                     infoState.heartImage.height + 3,
                     infoState.bgColor
                 );
-                screen.drawTransparentImage(
-                    infoState.heartImage,
-                    1,
-                    1
-                );
+                screen.drawTransparentImage(infoState.heartImage, 1, 1);
 
                 let mult = infoState.multiplierImage.clone();
                 mult.replace(1, infoState.fontColor);
@@ -1252,7 +1379,9 @@ namespace info {
                 );
                 screen.print(
                     num,
-                    infoState.heartImage.width + 3 + infoState.multiplierImage.width,
+                    infoState.heartImage.width +
+                        3 +
+                        infoState.multiplierImage.width,
                     1,
                     infoState.fontColor,
                     font

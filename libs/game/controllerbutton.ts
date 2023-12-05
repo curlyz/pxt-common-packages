@@ -28,6 +28,8 @@ enum ControllerButton {
 //% weight=98 color="#D54322" icon="\uf11b"
 //% groups='["Single Player", "Multiplayer"]'
 //% blockGap=8
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller {
     let _userEventsEnabled = true;
     let defaultRepeatDelay = 500;
@@ -119,7 +121,8 @@ namespace controller {
          * Run some code when a button is pressed, released, or held
          */
         //% weight=99 blockGap=8 help=controller/button/on-event
-        //% blockId=keyonevent block="on %button **button** %event"
+        //% blockHidden=true
+	//% blockId=keyonevent block="on %button **button** %event"
         //% group="Single Player"
         onEvent(event: ControllerButtonEvent, handler: () => void) {
             const eventHandler = this.getOrCreateHandlerForEvent(event);
@@ -181,7 +184,8 @@ namespace controller {
          * Indicates if the button is currently pressed
          */
         //% weight=96 blockGap=8 help=controller/button/is-pressed
-        //% blockId=keyispressed block="is %button **button** pressed"
+        //% blockHidden=true
+	//% blockId=keyispressed block="is %button **button** pressed"
         //% group="Single Player"
         isPressed() {
             return this._pressed;

@@ -8,6 +8,7 @@ interface SpriteLike {
     __serialize(offset: number): Buffer;
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace sprites {
     export class BaseSprite implements SpriteLike {
         protected _z: number;

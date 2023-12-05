@@ -5,6 +5,8 @@ enum ControllerLightCondition {
     Bright = 2,  // SENSOR_THRESHOLD_HIGH
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller {
     /**
      * Read the light level applied to the LED screen in a range from 0 (dark) to 255 (bright).
@@ -13,6 +15,7 @@ namespace controller {
     //% parts="lightsensor"
     //% weight=30 blockGap=8
     //% group="Extras"
+    //% blockHidden=true //gb.override: hide the irrelevant block
     export function lightLevel(): number {
         return controller.__internal.lightLevel();
     }
@@ -26,6 +29,7 @@ namespace controller {
     //% parts="lightsensor"
     //% weight=84 blockGap=12
     //% group="Extras"
+    //% blockHidden=true //gb.override: hide the irrelevant block
     export function onLightConditionChanged(condition: ControllerLightCondition, handler: () => void): void {
         controller.__internal.onLightConditionChanged(condition, handler);
     } 

@@ -1,3 +1,4 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace game {
     export interface PromptTheme {
         colorPrompt: number;
@@ -24,6 +25,7 @@ namespace game {
     //% answerLength.min=1
     //% answerLength.max=24
     //% group="Prompt"
+    //% blockHidden=true
     export function askForString(message: any, answerLength = 12) {
         let p = new game.Prompt();
         const result = p.show(console.inspect(message), answerLength);

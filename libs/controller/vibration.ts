@@ -1,3 +1,5 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller {
     /**
      * Vibrates the controller for the given duration (in milli seconds)

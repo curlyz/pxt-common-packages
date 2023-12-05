@@ -1,3 +1,4 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace scene {
     export class Renderable extends sprites.BaseSprite {
         public constructor(

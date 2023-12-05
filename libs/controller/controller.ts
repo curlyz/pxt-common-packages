@@ -1,3 +1,5 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller {
     /**
      * Configures the timing of the on button repeat event for all of the controller buttons
@@ -7,6 +9,7 @@ namespace controller {
     //% blockId=repeatDefaultDelayInterval block="set button repeat delay $delay ms interval $interval ms"
     //% weight=10
     //% group="Single Player"
+    //% blockHidden=true //gb.override: hide the irrelevant block
     export function configureRepeatEventDefaults(delay: number, interval: number) {
         controller.setRepeatDefault(delay, interval);
     }

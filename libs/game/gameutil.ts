@@ -1,6 +1,7 @@
 /**
  * Game transitions and dialog
  **/
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace game {
 
     /**
@@ -11,6 +12,7 @@ namespace game {
     //% help=game/on-update weight=100 afterOnStart=true
     //% blockId=gameupdate block="on game update"
     //% blockAllowMultiple=1
+    //% blockHidden=true
     export function onUpdate(a: () => void): void {
         if (!a) return;
         game.eventContext().registerFrameHandler(scene.UPDATE_PRIORITY, a);
@@ -24,6 +26,7 @@ namespace game {
     //% help=game/on-update-interval weight=99 afterOnStart=true
     //% blockId=gameinterval block="on game update every %period=timePicker ms"
     //% blockAllowMultiple=1
+    //% blockHidden=true
     export function onUpdateInterval(period: number, a: () => void): void {
         if (!a || period < 0) return;
         let timer = 0;
@@ -42,6 +45,7 @@ namespace game {
     //% blockId=arcade_game_runtime block="time since start (ms)"
     //% group="Gameplay" weight=11
     //% help=game/runtime
+    //% blockHidden=true
     export function runtime(): number {
         return currentScene().millis();
     }

@@ -46,6 +46,7 @@ enum GamepadButton {
 }
 
 //% icon="\uf11b" color="#303030"
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace gamepad {
     /**
      * Maps to a standard layout button to the button index

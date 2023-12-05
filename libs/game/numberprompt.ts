@@ -1,3 +1,4 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace game {
 
     /**
@@ -13,6 +14,7 @@ namespace game {
     //% answerLength.min=1
     //% answerLength.max=10
     //% group="Prompt"
+    //% blockHidden=true
     export function askForNumber(message: any, answerLength = 6) {
         answerLength = Math.max(0, Math.min(10, answerLength));
         let p = new game.NumberPrompt();

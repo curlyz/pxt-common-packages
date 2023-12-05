@@ -1,6 +1,7 @@
 /*
     Animation library for sprites
 */
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace animation {
     //Handles all the updates
     let animations: Animation[];

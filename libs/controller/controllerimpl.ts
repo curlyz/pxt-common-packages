@@ -1,3 +1,5 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller.__internal {
     export function onGesture(gesture: ControllerGesture, handler: () => void) {
         const state = sceneState();
@@ -31,6 +33,8 @@ namespace controller.__internal {
     }
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller {
     /**
      * Configures the pins used by the crank
@@ -45,6 +49,8 @@ namespace controller {
     }
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller.__internal {
     let crankEncoder: RotaryEncoder;
     export function crankPosition(): number {
@@ -57,6 +63,8 @@ namespace controller.__internal {
     }
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller {
     /**
      * Shows an animation on the controller lights
@@ -71,6 +79,8 @@ namespace controller {
     }
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller.__internal {
     const ANIM_KEY = "ctrllightanim";
     const ANIM_TIME_KEY = "ctrllightanimend";
@@ -139,6 +149,8 @@ namespace controller.__internal {
     }
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller.__internal {
     export function lightLevel(): number {
         return input.lightLevel();
@@ -156,12 +168,16 @@ namespace controller.__internal {
     }
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller.__internal {
     export function temperature(unit: ControllerTemperatureUnit): number {
         return input.temperature(<TemperatureUnit><number>unit);
     }
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller.__internal {
     let vibrationPin: DigitalInOutPin;
     let vibrationEnd: number;

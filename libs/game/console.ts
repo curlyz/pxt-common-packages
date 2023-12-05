@@ -1,3 +1,4 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace game.consoleOverlay {
     let consoleColor = 1;
     let consoleStrings: string[];

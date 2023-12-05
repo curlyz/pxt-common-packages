@@ -1,3 +1,5 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller {
     //% fixedInstance whenUsed block="{id:controller}A"
     export const A = new Button(ControllerButton.A, DAL.CFG_PIN_BTN_A);
