@@ -184,6 +184,7 @@ namespace control {
  */
 //% help=text/convert-to-text weight=1
 //% block="convert $value=math_number to text"
+//% block.loc.vi="chuyển $value=math_number thành chữ"
 //% blockId=variable_to_text blockNamespace="text"
 function convertToText(value: any): string {
     return "" + value;
