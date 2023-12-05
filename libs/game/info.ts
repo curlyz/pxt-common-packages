@@ -464,7 +464,7 @@ namespace info {
     //% block="countdown"
     //% blockHidden=true
     //% blockId=gamegetcountdown
-    //% weight=79 help=info/countdown
+    //% weight=79
     //% group="Countdown"
     //% advance=true
     //% blockHidden=true
@@ -498,7 +498,7 @@ namespace info {
     //% block="change countdown by $seconds (s)"
     //% blockHidden=true
     //% blockId=gamechangecountdown
-    //% weight=77 help=info/change-countdown-by
+    //% weight=77
     //% group="Countdown"
     //% advance=true
     //% blockHidden=true
