@@ -6,6 +6,8 @@ const enum ControllerTemperatureUnit {
 }
 
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller {
     /**
      * Get the temperature in Celsius or Fahrenheit degrees.

@@ -14,6 +14,7 @@ Frame handlers:
  */
 //% weight=99 color="#4B7BEC" icon="\uf1d8"
 //% groups='["Create", "Physics", "Effects", "Projectiles", "Overlaps", "Lifecycle"]'
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace sprites {
     export class FollowingSprite {
         constructor(
@@ -28,7 +29,8 @@ namespace sprites {
      * Create a new sprite from an image
      * @param img the image
      */
-    //% group="Create"
+    //% blockHidden=true
+	//% group="Create"
     //% blockId=spritescreate block="sprite %img=screen_image_picker of kind %kind=spritekind"
     //% expandableArgumentMode=toggle
     //% blockSetVariable=mySprite
@@ -51,7 +53,8 @@ namespace sprites {
      * Create a new sprite from an image
      * @param img the image
      */
-    //% group="Create"
+    //% blockHidden=true
+	//% group="Create"
     //% blockId=spritescreatenoset block="sprite %img=screen_image_picker of kind %kind=spritekind"
     //% blockAliasFor="sprites.create"
     //% expandableArgumentMode=toggle
@@ -60,7 +63,8 @@ namespace sprites {
         return sprites.create(img, kind);
     }
 
-    //% group="Effects"
+    //% blockHidden=true
+	//% group="Effects"
     //% weight=80
     //% blockId=spritedestroy2 block="destroy $sprite || with $effect effect for $duration ms"
     //% sprite.shadow=variables_get
@@ -79,6 +83,7 @@ namespace sprites {
      */
     //% blockId=allOfKind block="array of sprites of kind %kind=spritekind"
     //% weight=87
+    //% blockHidden=true
     export function allOfKind(kind: number): Sprite[] {
         const spritesByKind = game.currentScene().spritesByKind;
         if (!(kind >= 0) || !spritesByKind[kind]) return [];
@@ -88,7 +93,8 @@ namespace sprites {
     /**
      * Destroys all sprites of the given kind.
      */
-    //% group="Effects"
+    //% blockHidden=true
+	//% group="Effects"
     //% weight=79 help=sprites/destroy-all-sprites-of-kind
     //% blockId=sprites_destroy_all_sprites_of_kind
     //% block="destroy all sprites of kind $kind || with $effect effect for $duration ms"
@@ -105,7 +111,8 @@ namespace sprites {
      * Create a new sprite with a given speed, and place it at the edge of the screen so it moves towards the middle.
      * The sprite auto-destroys when it leaves the screen. You can modify position after it's created.
      */
-    //% group="Projectiles"
+    //% blockHidden=true
+	//% group="Projectiles"
     //% blockId=spritescreateprojectilefromside block="projectile %img=screen_image_picker from side with vx %vx vy %vy"
     //% vx.shadow=spriteSpeedPicker
     //% vy.shadow=spriteSpeedPicker
@@ -120,7 +127,8 @@ namespace sprites {
      * Create a new sprite with a given speed that starts from the location of another sprite.
      * The sprite auto-destroys when it leaves the screen. You can modify position after it's created.
      */
-    //% group="Projectiles"
+    //% blockHidden=true
+	//% group="Projectiles"
     //% blockId=spritescreateprojectilefromsprite block="projectile %img=screen_image_picker from %sprite=variables_get(mySprite) with vx %vx vy %vy"
     //% vx.shadow=spriteSpeedPicker
     //% vy.shadow=spriteSpeedPicker
@@ -135,7 +143,8 @@ namespace sprites {
      * Create a new sprite with given speed, and place it at the edge of the screen so it moves towards the middle.
      * The sprite auto-destroys when it leaves the screen. You can modify position after it's created.
      */
-    //% group="Projectiles"
+    //% blockHidden=true
+	//% group="Projectiles"
     //% blockId=spritescreateprojectile block="projectile %img=screen_image_picker vx %vx vy %vy of kind %kind=spritekind||from sprite %sprite=variables_get(mySprite)"
     //% weight=99 help=sprites/create-projectile
     //% blockSetVariable=projectile

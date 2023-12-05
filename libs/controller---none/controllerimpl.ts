@@ -1,3 +1,5 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller.__internal {
     export function onGesture(gesture: ControllerGesture, handler: () => void) {
     }
@@ -10,6 +12,8 @@ namespace controller.__internal {
     }
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller.__internal {
     export function crankPosition(): number {
         return 0;
@@ -19,6 +23,8 @@ namespace controller.__internal {
     //}
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller.__internal {
     //export function startLightAnimation(animation: light.NeoPixelAnimation, duration: number) {
     //}
@@ -27,6 +33,8 @@ namespace controller.__internal {
     }
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller.__internal {
     export function lightLevel(): number {
         return 0;
@@ -37,12 +45,16 @@ namespace controller.__internal {
     }
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller.__internal {
     export function temperature(unit: ControllerTemperatureUnit): number {
         return 0;
     }
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller.__internal {
     export function vibrate(millis: number) {
     }

@@ -4,6 +4,7 @@
 //% color="#03AA74" weight=100 icon="\uf021" block="Animation"
 //% groups='["Animate", "Advanced"]'
 //% weight=5
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace animation {
     const stateNamespace = "__animation";
 
@@ -586,6 +587,7 @@ namespace animation {
     //% group="Animate"
     //% weight=100
     //% help=animation/run-image-animation
+    //% blockHidden=true gb.override
     export function runImageAnimation(sprite: Sprite, frames: Image[], frameInterval?: number, loop?: boolean) {
         const anim = new ImageAnimation(sprite, frames, frameInterval || 500, !!loop);
         anim.init();
@@ -603,6 +605,7 @@ namespace animation {
     //% weight=80
     //% group="Animate"
     //% help=animation/run-movement-animation
+    //% blockHidden=true gb.override
     export function runMovementAnimation(sprite: Sprite, pathString: string, duration?: number, loop?: boolean) {
         const path = new Path(pathString);
         const anim = new MovementAnimation(sprite, path, duration / path.length, !!loop);
@@ -628,6 +631,7 @@ namespace animation {
     //% group="Animate"
     //% weight=60
     //% help=animation/stop-animation
+    //% blockHidden=true gb.override
     export function stopAnimation(type: AnimationTypes, sprite: Sprite) {
         let state: AnimationState = game.currentScene().data[stateNamespace];
         if (state && state.animations) {
@@ -718,6 +722,7 @@ namespace animation {
     //% frames.fieldOptions.filter="!tile !dialog !background"
     //% weight=40
     //% group="Animate" duplicateShadowOnDrag
+    //% blockHidden=true gb.override
     export function _animationFrames(frames: Image[]) {
         return frames
     }

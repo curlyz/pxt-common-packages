@@ -95,6 +95,7 @@ namespace effects {
         //% blockNamespace=scene
         //% group="Effects" blockGap=8
         //% weight=90 help=effects/start-screen-effect
+        //% blockHidden=true
         startScreenEffect(duration?: number, particlesPerSecond?: number): void {
             if (!this.sourceFactory)
                 return;
@@ -120,6 +121,7 @@ namespace effects {
         //% blockNamespace=scene
         //% group="Effects" blockGap=8
         //% weight=80 help=effects/end-screen-effect
+        //% blockHidden=true
         endScreenEffect(): void {
             if (this.source) {
                 this.source.destroy();
@@ -136,6 +138,7 @@ namespace effects {
     //% blockNamespace=sprites
     //% group="Effects" weight=89
     //% help=effects/clear-particles
+    //% blockHidden=true
     export function clearParticles(anchor: Sprite | particles.ParticleAnchor) {
         const sources = game.currentScene().particleSources;
         if (!sources) return;

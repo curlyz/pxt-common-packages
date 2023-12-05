@@ -1,3 +1,4 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace sprites {
     /**
      * Gets the "kind" of sprite
@@ -6,6 +7,7 @@ namespace sprites {
     //% blockId=spritekind block="$kind"
     //% kindNamespace=SpriteKind kindMemberName=kind kindPromptHint="e.g. Coin, Fireball, Asteroid..."
     //% help=sprites/sprite-kind
+    //% blockHidden=true
     export function _spriteKind(kind: number): number {
         return kind;
     }

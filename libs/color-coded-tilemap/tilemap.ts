@@ -1,4 +1,5 @@
 //% blockGap=8
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace scene {
     /**
      *  Package for color-coded tilemap blocks, to support existing curriculum.
@@ -13,6 +14,7 @@ namespace scene {
     //% scale.defl=TileScale.Sixteen
     //% group="Color-coded Tilemap"
     //% help=color-coded-tilemap/set-tile-map
+    //% blockHidden=true
     export function setTileMap(map: Image, scale = TileScale.Sixteen) {
         const scene = game.currentScene();
         if (!scene.tileMap || !(scene.tileMap as tiles.legacy.LegacyTilemap).isLegacy) {
@@ -30,6 +32,7 @@ namespace scene {
     //% blockId=gamesettile block="set tile %index=colorindexpicker to %img=tile_image_picker with wall %wall=toggleOnOff"
     //% group="Color-coded Tilemap"
     //% help=color-coded-tilemap/set-tile
+    //% blockHidden=true
     export function setTile(index: number, img: Image, wall?: boolean) {
         const scene = game.currentScene();
         if (!scene.tileMap || !(scene.tileMap as tiles.legacy.LegacyTilemap).isLegacy) {
@@ -46,6 +49,7 @@ namespace scene {
     //% blockId=gamegettile block="tile col %col row %row"
     //% group="Color-coded Tilemap" blockSetVariable="myTile"
     //% help=color-coded-tilemap/get-tile
+    //% blockHidden=true
     export function getTile(col: number, row: number): tiles.Tile {
         const scene = game.currentScene();
         if (!scene.tileMap || !(scene.tileMap as tiles.legacy.LegacyTilemap).isLegacy) {
@@ -61,6 +65,7 @@ namespace scene {
     //% blockId=gamegettilestype block="array of all %index=colorindexpicker tiles"
     //% group="Color-coded Tilemap" blockSetVariable="tile list"
     //% help=color-coded-tilemap/get-tiles-by-type
+    //% blockHidden=true
     export function getTilesByType(index: number): tiles.Tile[] {
         const scene = game.currentScene();
         if (!scene.tileMap || !(scene.tileMap as tiles.legacy.LegacyTilemap).isLegacy) {
@@ -78,6 +83,7 @@ namespace scene {
     //% group="Color-coded Tilemap"
     //% color.shadow="colorindexpicker"
     //% help=color-coded-tilemap/place-on-random-tile
+    //% blockHidden=true
     export function placeOnRandomTile(sprite: Sprite, color: number): void {
         if (!sprite || !game.currentScene().tileMap) return;
         const tiles = getTilesByType(color);
@@ -93,6 +99,7 @@ namespace scene {
     //% blockId=gamesettileat block="set %tile=gamegettile to %index=colorindexpicker"
     //% group="Color-coded Tilemap"
     //% help=color-coded-tilemap/set-tile-at
+    //% blockHidden=true
     export function setTileAt(tile: tiles.Tile, index: number) {
         const scene = game.currentScene();
         if (!scene.tileMap || !(scene.tileMap as tiles.legacy.LegacyTilemap).isLegacy) {
@@ -111,6 +118,7 @@ namespace scene {
     //% blockId=legacyplaceontile block="on top of %tile=variables_get(myTile) place %sprite=variables_get(mySprite)"
     //% group="Color-coded Tilemap"
     //% help=tiles/place
+    //% blockHidden=true
     export function place(tile: tiles.Tile, mySprite: Sprite): void {
         if (!tile) return;
         tile.place(mySprite);
@@ -126,6 +134,7 @@ namespace scene {
     //% draggableParameters="reporter"
     //% blockId=spritesollisions block="on $sprite of kind $kind=spritekind hits wall $tile=colorindexpicker"
     //% help=color-coded-tilemap/on-hit-tile
+    //% blockHidden=true
     export function onHitTile(kind: number, tile: number, handler: (sprite: Sprite) => void) {
         if (kind == undefined || tile < 0 || tile > 0xF || !handler) return;
 
@@ -149,6 +158,7 @@ namespace scene {
     //% blockId=legacyspriteobstacle block="%sprite=variables_get(mySprite) wall hit on %direction"
     //% group="Color-coded Tilemap"
     //% help=sprites/sprite/tile-hit-from
+    //% blockHidden=true
     export function tileHitFrom(sprite: Sprite, direction: CollisionDirection): number {
         if (!sprite) return 0;
         return sprite.tileHitFrom(direction);

@@ -5,6 +5,7 @@ namespace Math {
      */
     //% weight=2
     //% blockId=percentchance block="%percentage|\\% chance"
+    //% block.loc.vi="%percentage|\\% phần trăm đúng"
     //% percentage.min=0 percentage.max=100;
     //% help=math/percent-chance
     export function percentChance(percentage: number): boolean {

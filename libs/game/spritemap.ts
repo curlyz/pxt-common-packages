@@ -1,3 +1,4 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace sprites {
     export class SpriteMap {
         private cellWidth: number;

@@ -1,6 +1,7 @@
 /**
  * Game transitions and dialog
  **/
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace game {
     /**
      * Determines if diagnostics are shown
@@ -261,6 +262,7 @@ namespace game {
     //% weight=90
     //% blockGap=8
     //% help=game/set-game-over-effect
+    //% blockHidden=true
     export function setGameOverEffect(win: boolean, effect: effects.BackgroundEffect) {
         init();
         const goc = game.gameOverConfig();
@@ -284,6 +286,7 @@ namespace game {
     //% weight=80
     //% blockGap=8
     //% help=game/set-game-over-sound
+    //% blockHidden=true
     export function setGameOverPlayable(win: boolean, sound: music.Playable, looping: boolean) {
         init();
         const goc = game.gameOverConfig();
@@ -311,6 +314,7 @@ namespace game {
     //% weight=70
     //% blockGap=8
     //% help=game/set-game-over-message
+    //% blockHidden=true
     export function setGameOverMessage(win: boolean, message: string) {
         init();
         const goc = game.gameOverConfig();
@@ -328,6 +332,7 @@ namespace game {
     //% weight=60
     //% blockGap=8
     //% help=game/set-game-over-scoring-type
+    //% blockHidden=true
     export function setGameOverScoringType(type: ScoringType) {
         init();
         const goc = game.gameOverConfig();
@@ -350,6 +355,7 @@ namespace game {
     //% blockId=gameOver block="game over %win=toggleWinLose || with %effect effect"
     //% weight=80 help=game/over
     //% deprecated=true
+    //% blockHidden=true
     export function over(win: boolean = false, effect?: effects.BackgroundEffect) {
         // Match legacy behavior unless effect was set by user
         const goc = game.gameOverConfig();
@@ -364,6 +370,7 @@ namespace game {
     //% blockGap=8
     //% help=game/over
     //% group="Game Over"
+    //% blockHidden=true
     export function gameOver(win: boolean) {
         _gameOverImpl(win);
     }
@@ -474,6 +481,7 @@ namespace game {
      */
     //% group="Gameplay"
     //% help=game/paint weight=10 afterOnStart=true
+    //% blockHidden=true
     export function onPaint(a: () => void): void {
         init();
         if (!a) return;
@@ -486,6 +494,7 @@ namespace game {
      */
     //% group="Gameplay"
     //% help=game/shade weight=10 afterOnStart=true
+    //% blockHidden=true
     export function onShade(a: () => void): void {
         init();
         if (!a) return;

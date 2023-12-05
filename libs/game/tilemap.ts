@@ -13,6 +13,7 @@ namespace tiles {
      * A (col, row) location in the tilemap
      **/
     //% blockNamespace=scene color="#401255"
+    //% blockHidden=true
     export class Location {
         protected _row: number;
         protected _col: number;
@@ -26,6 +27,7 @@ namespace tiles {
             return game.currentScene().tileMap;
         }
 
+        //% blockHidden=true
         //% group="Locations" blockSetVariable="location"
         //% blockCombine block="column"
         //% weight=100
@@ -33,6 +35,7 @@ namespace tiles {
             return this._col;
         }
 
+        //% blockHidden=true
         //% group="Locations" blockSetVariable="location"
         //% blockCombine block="row"
         //% weight=100
@@ -40,6 +43,7 @@ namespace tiles {
             return this._row;
         }
 
+        //% blockHidden=true
         //% group="Locations" blockSetVariable="location"
         //% blockCombine block="x"
         //% weight=100
@@ -48,6 +52,7 @@ namespace tiles {
             return (this._col << scale) + (1 << (scale - 1));
         }
 
+        //% blockHidden=true
         //% group="Locations" blockSetVariable="location"
         //% blockCombine block="y"
         //% weight=100
@@ -56,6 +61,7 @@ namespace tiles {
             return (this._row << scale) + (1 << (scale - 1));
         }
 
+        //% blockHidden=true
         //% group="Locations" blockSetVariable="location"
         //% blockCombine block="left"
         //% weight=100
@@ -63,6 +69,7 @@ namespace tiles {
             return (this._col << this.tileMap.scale);
         }
 
+        //% blockHidden=true
         //% group="Locations" blockSetVariable="location"
         //% blockCombine block="top"
         //% weight=100
@@ -70,6 +77,7 @@ namespace tiles {
             return (this._row << this.tileMap.scale);
         }
 
+        //% blockHidden=true
         //% group="Locations" blockSetVariable="location"
         //% blockCombine block="right"
         //% weight=100
@@ -77,6 +85,7 @@ namespace tiles {
             return this.left + (1 << this.tileMap.scale);
         }
 
+        //% blockHidden=true
         //% group="Locations" blockSetVariable="location"
         //% blockCombine block="bottom"
         //% weight=100
@@ -105,10 +114,12 @@ namespace tiles {
          * Returns the neighboring location in a specifc direction from a location in a tilemap
          * @param direction The direction to fetch the location in
          */
+        //% blockHidden=true
         //% blockId=tiles_location_get_neighboring_location
         //% block="tilemap location $direction of $this"
         //% this.defl=location
         //% this.shadow=variables_get
+        //% blockHidden=true
         //% group="Locations" blockGap=8
         //% weight=10 help=tiles/get-neighboring-location
         public getNeighboringLocation(direction: CollisionDirection): Location {
@@ -172,6 +183,7 @@ namespace tiles {
          * Center the given sprite on this tile
          * @param sprite
          */
+        //% blockHidden=true
         //% blockId=gameplaceontile block="on top of %tile(myTile) place %sprite=variables_get(mySprite)"
         //% blockNamespace="scene" group="Tilemap Operations"
         //% weight=25
@@ -589,7 +601,8 @@ namespace tiles {
         return new TileMapData(data, layer, tiles, scale)
     }
 
-    //% blockId=tilemap_editor block="set tilemap to $tilemap"
+    //% blockHidden=true
+	//% blockId=tilemap_editor block="set tilemap to $tilemap"
     //% weight=200 blockGap=8
     //% tilemap.fieldEditor="tilemap"
     //% tilemap.fieldOptions.decompileArgumentAsString="true"
@@ -607,7 +620,8 @@ namespace tiles {
      *
      * @param tilemap The tilemap to set as the current tilemap
      */
-    //% blockId=set_current_tilemap block="set tilemap to $tilemap"
+    //% blockHidden=true
+	//% blockId=set_current_tilemap block="set tilemap to $tilemap"
     //% weight=201 blockGap=8
     //% tilemap.shadow=tiles_tilemap_editor
     //% blockNamespace="scene" group="Tilemaps" duplicateShadowOnDrag
@@ -621,7 +635,8 @@ namespace tiles {
      * @param loc
      * @param tile
      */
-    //% blockId=mapsettileat block="set $tile at $loc=mapgettile"
+    //% blockHidden=true
+	//% blockId=mapsettileat block="set $tile at $loc=mapgettile"
     //% tile.shadow=tileset_tile_picker
     //% tile.decompileIndirectFixedInstances=true
     //% blockNamespace="scene" group="Tilemap Operations" blockGap=8
@@ -640,7 +655,8 @@ namespace tiles {
      * @param loc
      * @param on
      */
-    //% blockId=mapsetwallat block="set wall $on at $loc"
+    //% blockHidden=true
+	//% blockId=mapsetwallat block="set wall $on at $loc"
     //% on.shadow=toggleOnOff loc.shadow=mapgettile
     //% blockNamespace="scene" group="Tilemap Operations"
     //% help=tiles/set-wall-at
@@ -657,7 +673,8 @@ namespace tiles {
      * @param col
      * @param row
      */
-    //% blockId=mapgettile block="tilemap col $col row $row"
+    //% blockHidden=true
+	//% blockId=mapgettile block="tilemap col $col row $row"
     //% blockNamespace="scene" group="Locations"
     //% weight=100 blockGap=8
     //% help=tiles/get-tile-location
@@ -693,7 +710,8 @@ namespace tiles {
      * @param location
      * @param tile
      */
-    //% blockId=maplocationistile block="tile at $location is $tile"
+    //% blockHidden=true
+	//% blockId=maplocationistile block="tile at $location is $tile"
     //% location.shadow=mapgettile
     //% tile.shadow=tileset_tile_picker tile.decompileIndirectFixedInstances=true
     //% blockNamespace="scene" group="Locations" blockGap=8
@@ -709,7 +727,8 @@ namespace tiles {
      * otherwise returns false
      * @param location The location to check for a wall
      */
-    //% blockId=tiles_tile_at_location_is_wall
+    //% blockHidden=true
+	//% blockId=tiles_tile_at_location_is_wall
     //% block="tile at $location is wall"
     //% location.shadow=mapgettile
     //% blockNamespace="scene" group="Locations" blockGap=8
@@ -724,7 +743,8 @@ namespace tiles {
      *
      * @param location The location of the image to fetch
      */
-    //% blockId=tiles_image_at_location
+    //% blockHidden=true
+	//% blockId=tiles_image_at_location
     //% block="tile image at $location"
     //% location.shadow=mapgettile
     //% weight=0 help=tiles/tile-image-at-location
@@ -740,7 +760,8 @@ namespace tiles {
      * @param sprite
      * @param loc
      */
-    //% blockId=mapplaceontile block="place $sprite=variables_get(mySprite) on top of $loc"
+    //% blockHidden=true
+	//% blockId=mapplaceontile block="place $sprite=variables_get(mySprite) on top of $loc"
     //% loc.shadow=mapgettile
     //% blockNamespace="scene" group="Tilemap Operations" blockGap=8
     //% help=tiles/place-on-tile
@@ -755,7 +776,8 @@ namespace tiles {
      * @param sprite
      * @param tile
      */
-    //% blockId=mapplaceonrandomtile block="place $sprite=variables_get(mySprite) on top of random $tile"
+    //% blockHidden=true
+	//% blockId=mapplaceonrandomtile block="place $sprite=variables_get(mySprite) on top of random $tile"
     //% tile.shadow=tileset_tile_picker
     //% tile.decompileIndirectFixedInstances=true
     //% blockNamespace="scene" group="Tilemap Operations"
@@ -772,7 +794,8 @@ namespace tiles {
      * Get all tiles in the tilemap with the given type (image).
      * @param tile
      */
-    //% blockId=mapgettilestype block="array of all $tile locations"
+    //% blockHidden=true
+	//% blockId=mapgettilestype block="array of all $tile locations"
     //% tile.shadow=tileset_tile_picker
     //% tile.decompileIndirectFixedInstances=true
     //% blockNamespace="scene" group="Locations" blockGap=8
@@ -801,7 +824,8 @@ namespace tiles {
     /**
      * A tilemap
      */
-    //% blockId=tiles_tilemap_editor shim=TD_ID
+    //% blockHidden=true
+	//% blockId=tiles_tilemap_editor shim=TD_ID
     //% weight=200 blockGap=8
     //% block="tilemap $tilemap"
     //% tilemap.fieldEditor="tilemap"

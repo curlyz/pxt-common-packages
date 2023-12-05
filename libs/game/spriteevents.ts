@@ -1,3 +1,4 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace sprites {
     /**
      * Run code when a certain kind of sprite is created
@@ -7,6 +8,7 @@ namespace sprites {
     //% group="Lifecycle" draggableParameters="reporter" weight=97
     //% blockId=spritesoncreated block="on created $sprite of kind $kind=spritekind"
     //% help=sprites/on-created
+    //% blockHidden=true
     export function onCreated(kind: number, handler: (sprite: Sprite) => void): void {
         if (!handler || kind == undefined) return;
 
@@ -28,6 +30,7 @@ namespace sprites {
     //% weight=96 draggableParameters="reporter"
     //% blockId=spritesondestroyed block="on destroyed $sprite of kind $kind=spritekind "
     //% help=sprites/on-destroyed
+    //% blockHidden=true
     export function onDestroyed(kind: number, handler: (sprite: Sprite) => void) {
         if (!handler || kind == undefined) return;
 
@@ -48,6 +51,7 @@ namespace sprites {
     //% blockId=spritesoverlap block="on $sprite of kind $kind=spritekind overlaps $otherSprite of kind $otherKind=spritekind"
     //% help=scene/on-overlap
     //% blockGap=8
+    //% blockHidden=true
     export function onOverlap(kind: number, otherKind: number, handler: (sprite: Sprite, otherSprite: Sprite) => void) {
         if (kind == undefined || otherKind == undefined || !handler) return;
         const sc = game.currentScene();
@@ -75,6 +79,7 @@ namespace sprites {
     }
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace scene {
     /**
      * Run code when a certain kind of sprite overlaps a tile
@@ -87,6 +92,7 @@ namespace scene {
     //% blockId=spriteshittile block="on $sprite of kind $kind=spritekind overlaps $tile at $location"
     //% tile.shadow=tileset_tile_picker
     //% help=scene/on-overlap-tile
+    //% blockHidden=true
     export function onOverlapTile(kind: number, tile: Image, handler: (sprite: Sprite, location: tiles.Location) => void) {
         if (kind == undefined || !tile || !handler) return;
 
@@ -109,6 +115,7 @@ namespace scene {
     //% weight=100 draggableParameters="reporter" blockGap=8
     //% blockId=spriteshitwall block="on $sprite of kind $kind=spritekind hits wall at $location"
     //% help=scene/on-hit-wall
+    //% blockHidden=true
     export function onHitWall(kind: number, handler: (sprite: Sprite, location: tiles.Location) => void) {
         if (kind == undefined || !handler) return;
 

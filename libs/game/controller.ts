@@ -11,6 +11,8 @@ enum ControllerEvent {
 //% weight=98 color="#D54322" icon="\uf11b"
 //% groups='["Single Player", "Multiplayer"]'
 //% blockGap=8
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller {
     let _players: Controller[];
     game.addScenePopHandler(() => {
@@ -180,7 +182,8 @@ namespace controller {
          * @param vx The velocity used for horizontal movement when left/right is pressed
          * @param vy The velocity used for vertical movement when up/down is pressed
          */
-        //% blockId="ctrlgame_control_sprite" block="%controller move $sprite=variables_get(mySprite) with buttons||vx $vx vy $vy"
+        //% blockHidden=true
+	    //% blockId="ctrlgame_control_sprite" block="%controller move $sprite=variables_get(mySprite) with buttons||vx $vx vy $vy"
         //% weight=100
         //% expandableArgumentMode="toggle"
         //% vx.defl=100 vy.defl=100
@@ -226,7 +229,8 @@ namespace controller {
          * Run some code when a button is pressed, released, or held
          */
         //% weight=99 blockGap=8
-        //% blockId=ctrlonbuttonevent block="on %controller %button **button** %event"
+        //% blockHidden=true
+	    //% blockId=ctrlonbuttonevent block="on %controller %button **button** %event"
         //% group="Multiplayer"
         //% help=controller/on-button-event
         //% parts="multiplayer"
@@ -240,7 +244,8 @@ namespace controller {
          * @param handler
          */
         //% weight=99 blockGap=8
-        //% blockId=ctrlonevent block="on %controller %event"
+        //% blockHidden=true
+	    //% blockId=ctrlonevent block="on %controller %event"
         //% group="Multiplayer"
         //% help=controller/on-event
         //% parts="multiplayer"
@@ -263,7 +268,8 @@ namespace controller {
          * Indicates if the button is currently pressed
         */
         //% weight=96 blockGap=8 help=controller/button/is-pressed
-        //% blockId=ctrlispressed block="is %controller %button **button** pressed"
+        //% blockHidden=true
+	    //% blockId=ctrlispressed block="is %controller %button **button** pressed"
         //% group="Multiplayer"
         //% parts="multiplayer"
         isPressed(btn: ControllerButton): boolean {
@@ -275,7 +281,8 @@ namespace controller {
          * @param step the distance, eg: 100
          */
         //% weight=50 blockGap=8 help=controller/dx
-        //% blockId=ctrldx block="%controller dx (left-right buttons)||scaled by %step"
+        //% blockHidden=true
+	    //% blockId=ctrldx block="%controller dx (left-right buttons)||scaled by %step"
         //% step.defl=100
         //% group="Multiplayer"
         //% parts="multiplayer"
@@ -304,7 +311,8 @@ namespace controller {
          * @param step the distance, eg: 100
          */
         //% weight=49 help=keys/dy
-        //% blockId=ctrldy block="%controller dy (up-down buttons)||scaled by %step"
+        //% blockHidden=true
+	    //% blockId=ctrldy block="%controller dy (up-down buttons)||scaled by %step"
         //% step.defl=100
         //% group="Multiplayer"
         //% parts="multiplayer"
@@ -430,7 +438,8 @@ namespace controller {
      * @param vx The velocity used for horizontal movement when left/right is pressed
      * @param vy The velocity used for vertical movement when up/down is pressed
      */
-    //% blockId="game_control_sprite" block="move $sprite=variables_get(mySprite) with buttons||vx $vx vy $vy"
+    //% blockHidden=true
+	//% blockId="game_control_sprite" block="move $sprite=variables_get(mySprite) with buttons||vx $vx vy $vy"
     //% weight=100
     //% expandableArgumentMode="toggle"
     //% vx.defl=100 vy.defl=100
@@ -447,7 +456,8 @@ namespace controller {
      * @param step the distance, eg: 100
      */
     //% weight=50 blockGap=8 help=controller/dx
-    //% blockId=keydx block="dx (left-right buttons)||scaled by %step"
+    //% blockHidden=true
+	//% blockId=keydx block="dx (left-right buttons)||scaled by %step"
     //% step.defl=100
     //% group="Single Player"
     export function dx(step: number = 100) {
@@ -459,7 +469,8 @@ namespace controller {
      * @param step the distance, eg: 100
      */
     //% weight=49 help=keys/dy
-    //% blockId=keydy block="dy (up-down buttons)||scaled by %step"
+    //% blockHidden=true
+	//% blockId=keydy block="dy (up-down buttons)||scaled by %step"
     //% step.defl=100
     //% group="Single Player"
     export function dy(step: number = 100) {

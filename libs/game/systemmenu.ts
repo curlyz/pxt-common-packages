@@ -1,3 +1,4 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace scene.systemMenu {
     let instance: PauseMenu;
     let customMenuOptions: MenuOption[];

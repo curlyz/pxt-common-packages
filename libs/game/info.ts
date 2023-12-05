@@ -5,7 +5,8 @@
 */
 //% color=#cf6a87 weight=80 icon="\uf2bb" blockGap=8
 //% groups='["Score", "Life", "Countdown", "Multiplayer"]'
-//% blockGap=8
+//% blockGap=8 advance=true
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace info {
 
     export enum Visibility {
@@ -300,15 +301,19 @@ namespace info {
      * Get the current score if any
      */
     //% weight=95 blockGap=8
-    //% blockId=hudScore block="score"
+    //% blockHidden=true
+	//% blockId=hudScore block="score"
     //% help=info/score
     //% group="Score"
+    //% advance=true 
+    //% blockHidden=true
     export function score() {
         return player1.impl.score();
     }
 
     //%
     //% group="Score"
+    //% blockHidden=true
     export function hasScore() {
         return player1.impl.hasScore();
     }
@@ -317,9 +322,12 @@ namespace info {
      * Get the last recorded high score
      */
     //% weight=94
-    //% blockId=highScore block="high score"
+    //% blockHidden=true
+	//% blockId=highScore block="high score"
     //% help=info/high-score
     //% group="Score"
+    //% advance=true
+    //% blockHidden=true
     export function highScore(): number {
         return settings.readNumber("high-score") || 0;
     }
@@ -328,9 +336,12 @@ namespace info {
      * Set the score
      */
     //% weight=93 blockGap=8
-    //% blockId=hudsetScore block="set score to %value"
+    //% blockHidden=true
+	//% blockId=hudsetScore block="set score to %value"
     //% help=info/set-score
     //% group="Score"
+    //% advance=true
+    //% blockHidden=true
     export function setScore(value: number) {
         player1.impl.setScore(value);
     }
@@ -340,9 +351,12 @@ namespace info {
      * @param value the amount of change, eg: 1
      */
     //% weight=92
-    //% blockId=hudChangeScoreBy block="change score by %value"
+    //% blockHidden=true
+	//% blockId=hudChangeScoreBy block="change score by %value"
     //% help=info/change-score-by
     //% group="Score"
+    //% advance=true
+    //% blockHidden=true
     export function changeScoreBy(value: number) {
         player1.impl.changeScoreBy(value);
     }
@@ -351,14 +365,19 @@ namespace info {
      * Get the number of lives
      */
     //% weight=85 blockGap=8
-    //% blockId=hudLife block="life"
+    //% blockHidden=true
+	//% blockId=hudLife block="life"
     //% help=info/life
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function life() {
         return player1.impl.life();
     }
 
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function hasLife() {
         return player1.impl.hasLife();
     }
@@ -368,9 +387,12 @@ namespace info {
      * @param value the number of lives, eg: 3
      */
     //% weight=84 blockGap=8
-    //% blockId=hudSetLife block="set life to %value"
+    //% blockHidden=true
+	//% blockId=hudSetLife block="set life to %value"
     //% help=info/set-life
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function setLife(value: number) {
         player1.impl.setLife(value);
     }
@@ -380,9 +402,12 @@ namespace info {
      * @param value the change of lives, eg: -1
      */
     //% weight=83
-    //% blockId=hudChangeLifeBy block="change life by %value"
+    //% blockHidden=true
+	//% blockId=hudChangeLifeBy block="change life by %value"
     //% help=info/change-life-by
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function changeLifeBy(value: number) {
         player1.impl.changeLifeBy(value);
     }
@@ -392,9 +417,12 @@ namespace info {
      * is not called then game.over() is called instead
      */
     //% weight=82
-    //% blockId=gamelifeevent block="on life zero"
+    //% blockHidden=true
+	//% blockId=gamelifeevent block="on life zero"
     //% help=info/on-life-zero
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function onLifeZero(handler: () => void) {
         player1.impl.onLifeZero(handler);
     }
@@ -408,11 +436,14 @@ namespace info {
      * @param handler code to run when the score reaches the given value
      */
     //% weight=10
-    //% blockId=gameonscore
+    //% blockHidden=true
+	//% blockId=gameonscore
     //% block="on score $score"
     //% score.defl=100
     //% help=info/on-score
     //% group="Score"
+    //% advance=true
+    //% blockHidden=true
     export function onScore(score: number, handler: () => void) {
         player1.impl.onScore(score, handler);
     }
@@ -421,9 +452,12 @@ namespace info {
      * Get the value of the current count down
      */
     //% block="countdown"
-    //% blockId=gamegetcountdown
+    //% blockHidden=true
+	//% blockId=gamegetcountdown
     //% weight=79
     //% group="Countdown"
+    //% advance=true
+    //% blockHidden=true
     export function countdown(): number {
         initHUD();
         return infoState.gameEnd ? ((infoState.gameEnd - game.currentScene().millis()) / 1000) : 0;
@@ -433,9 +467,12 @@ namespace info {
      * Start a countdown of the given duration in seconds
      * @param duration the duration of the countdown, eg: 10
      */
-    //% blockId=gamecountdown block="start countdown %duration (s)"
+    //% blockHidden=true
+	//% blockId=gamecountdown block="start countdown %duration (s)"
     //% help=info/start-countdown weight=78 blockGap=8
     //% group="Countdown"
+    //% advance=true
+    //% blockHidden=true
     export function startCountdown(duration: number) {
         updateFlag(Visibility.Countdown, true);
         infoState.gameEnd = game.currentScene().millis() + duration * 1000;
@@ -447,9 +484,12 @@ namespace info {
      * @param seconds the number of seconds the countdown should be changed by
      */
     //% block="change countdown by $seconds (s)"
-    //% blockId=gamechangecountdown
+    //% blockHidden=true
+	//% blockId=gamechangecountdown
     //% weight=77
     //% group="Countdown"
+    //% advance=true
+    //% blockHidden=true
     export function changeCountdownBy(seconds: number) {
         startCountdown((countdown() + seconds));
     }
@@ -457,9 +497,12 @@ namespace info {
     /**
      * Stop the current countdown and hides the timer display
      */
-    //% blockId=gamestopcountdown block="stop countdown" weight=76
+    //% blockHidden=true
+	//% blockId=gamestopcountdown block="stop countdown" weight=76
     //% help=info/stop-countdown
     //% group="Countdown"
+    //% advance=true
+    //% blockHidden=true
     export function stopCountdown() {
         updateFlag(Visibility.Countdown, false);
         infoState.gameEnd = undefined;
@@ -470,9 +513,12 @@ namespace info {
      * Run code when the countdown reaches 0. If this function
      * is not called then game.over() is called instead
      */
-    //% blockId=gamecountdownevent block="on countdown end" weight=75
+    //% blockHidden=true
+	//% blockId=gamecountdownevent block="on countdown end" weight=75
     //% help=info/on-countdown-end
     //% group="Countdown"
+    //% advance=true
+    //% blockHidden=true
     export function onCountdownEnd(handler: () => void) {
         initHUD();
         infoState.countdownEndHandler = handler;
@@ -483,6 +529,8 @@ namespace info {
      * should be no larger than 8x8
      */
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function setLifeImage(image: Image) {
         updateFlag(Visibility.UserHeartImage, true);
         infoState.heartImage = image;
@@ -493,6 +541,8 @@ namespace info {
      * @param on if true, lives are shown; otherwise, lives are hidden
      */
     //% group="Life"
+    //% advance=true
+    //% blockHidden=true
     export function showLife(on: boolean) {
         updateFlag(Visibility.Life, on);
         updateFlag(Visibility._ExplicitlySetLife, true);
@@ -503,6 +553,8 @@ namespace info {
      * @param on if true, score is shown; otherwise, score is hidden
      */
     //% group="Score"
+    //% advance=true
+    //% blockHidden=true
     export function showScore(on: boolean) {
         updateFlag(Visibility.Score, on);
         updateFlag(Visibility._ExplicitlySetScore, true);
@@ -513,6 +565,8 @@ namespace info {
      * @param on if true, countdown is shown; otherwise, countdown is hidden
      */
     //% group="Countdown"
+    //% advance=true
+    //% blockHidden=true
     export function showCountdown(on: boolean) {
         updateFlag(Visibility.Countdown, on);
     }
@@ -529,6 +583,8 @@ namespace info {
      * @param color The index of the color (0-15)
      */
     //% group="Theme"
+    //% advance=true
+    //% blockHidden=true
     export function setBorderColor(color: number) {
         initHUD();
         infoState.borderColor = Math.min(Math.max(color, 0), 15) | 0;
@@ -540,6 +596,8 @@ namespace info {
      * @param color The index of the color (0-15)
      */
     //% group="Theme"
+    //% advance=true
+    //% blockHidden=true
     export function setBackgroundColor(color: number) {
         initHUD();
         infoState.bgColor = Math.min(Math.max(color, 0), 15) | 0;
@@ -551,6 +609,8 @@ namespace info {
      * @param color The index of the color (0-15)
      */
     //% group="Theme"
+    //% advance=true
+    //% blockHidden=true
     export function setFontColor(color: number) {
         initHUD();
         infoState.fontColor = Math.min(Math.max(color, 0), 15) | 0;
@@ -561,6 +621,8 @@ namespace info {
      * elements
      */
     //% group="Theme"
+    //% advance=true
+    //% blockHidden=true
     export function borderColor(): number {
         initHUD();
         return infoState.borderColor ? infoState.borderColor : 3;
@@ -571,6 +633,8 @@ namespace info {
      * elements
      */
     //% group="Theme"
+    //% advance=true
+    //% blockHidden=true
     export function backgroundColor(): number {
         initHUD();
         return infoState.bgColor ? infoState.bgColor : 1;
@@ -581,6 +645,8 @@ namespace info {
      * elements
      */
     //% group="Theme"
+    //% advance=true
+    //% blockHidden=true
     export function fontColor(): number {
         initHUD();
         return infoState.fontColor ? infoState.fontColor : 3;
@@ -798,6 +864,8 @@ namespace info {
 
     //% fixedInstances
     //% blockGap=8
+    //% advance=true
+    //% blockHidden=true
     export class PlayerInfo {
         protected _player: number;
         public impl: PlayerInfoImpl;
@@ -927,7 +995,8 @@ namespace info {
          * Get the player score
          */
         //% group="Multiplayer"
-        //% blockId=piscore block="%player score"
+        //% blockHidden=true
+	//% blockId=piscore block="%player score"
         //% help=info/score
         //% parts="multiplayer"
         score(): number {
@@ -938,7 +1007,8 @@ namespace info {
          * Set the player score
          */
         //% group="Multiplayer"
-        //% blockId=pisetscore block="set %player score to %value"
+        //% blockHidden=true
+	//% blockId=pisetscore block="set %player score to %value"
         //% value.defl=0
         //% help=info/set-score
         //% parts="multiplayer"
@@ -951,7 +1021,8 @@ namespace info {
          * @param value
          */
         //% group="Multiplayer"
-        //% blockId=pichangescore block="change %player score by %value"
+        //% blockHidden=true
+	//% blockId=pichangescore block="change %player score by %value"
         //% value.defl=1
         //% help=info/change-score-by
         //% parts="multiplayer"
@@ -967,7 +1038,8 @@ namespace info {
          * Get the player life
          */
         //% group="Multiplayer"
-        //% blockid=piflife block="%player life"
+        //% blockHidden=true
+	//% blockId=piflife block="%player life"
         //% help=info/life
         //% parts="multiplayer"
         life(): number {
@@ -978,7 +1050,8 @@ namespace info {
          * Set the player life
          */
         //% group="Multiplayer"
-        //% blockId=pisetlife block="set %player life to %value"
+        //% blockHidden=true
+	//% blockId=pisetlife block="set %player life to %value"
         //% value.defl=3
         //% help=info/set-life
         //% parts="multiplayer"
@@ -991,7 +1064,8 @@ namespace info {
          * @param value
          */
         //% group="Multiplayer"
-        //% blockId=pichangelife block="change %player life by %value"
+        //% blockHidden=true
+	//% blockId=pichangelife block="change %player life by %value"
         //% value.defl=-1
         //% help=info/change-life-by
         //% parts="multiplayer"
@@ -1005,7 +1079,8 @@ namespace info {
          * @param player player to check life of
          */
         //% group="Multiplayer"
-        //% blockId=pihaslife block="%player has life"
+        //% blockHidden=true
+	//% blockId=pihaslife block="%player has life"
         //% help=info/has-life
         //% parts="multiplayer"
         hasLife(): boolean {
@@ -1017,7 +1092,8 @@ namespace info {
          * @param handler
          */
         //% group="Multiplayer"
-        //% blockId=playerinfoonlifezero block="on %player life zero"
+        //% blockHidden=true
+	//% blockId=playerinfoonlifezero block="on %player life zero"
         //% help=info/on-life-zero
         //% parts="multiplayer"
         onLifeZero(handler: () => void) {
@@ -1032,7 +1108,8 @@ namespace info {
          * @param score the score to fire the event on
          * @param handler code to run when the score reaches the given value
          */
-        //% blockId=playerinfoonscore
+        //% blockHidden=true
+	//% blockId=playerinfoonscore
         //% block="on $this score $score"
         //% score.defl=100
         //% help=info/on-score

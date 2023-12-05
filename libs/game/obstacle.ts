@@ -1,3 +1,4 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace sprites {
     enum ObstacleFlags {
         Moved = 1 << 4,

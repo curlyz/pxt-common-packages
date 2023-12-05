@@ -5,6 +5,7 @@ interface SparseArray<T> {
 /**
  * Control the background, tiles and camera
  */
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace scene {
     export enum Flag {
         NeedsSorting = 1 << 0, // indicates the sprites in the scene need to be sorted before rendering

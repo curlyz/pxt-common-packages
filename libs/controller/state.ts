@@ -1,3 +1,5 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller {
     export interface ControllerSceneState {
         lastGesture?: ControllerGesture;

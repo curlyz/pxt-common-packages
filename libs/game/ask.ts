@@ -1,3 +1,4 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace game {
     /**
      * Prompts the user for a boolean question
@@ -9,6 +10,7 @@ namespace game {
     //% title.shadow=text
     //% subtitle.shadow=text
     //% group="Prompt"
+    //% blockHidden=true
     export function ask(title: any, subtitle?: any): boolean {
         controller._setUserEventsEnabled(false);
         game.eventContext(); // initialize the game

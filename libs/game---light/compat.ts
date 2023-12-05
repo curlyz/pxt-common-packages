@@ -1,3 +1,4 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace scene.systemMenu {
     export function isVisible() {
         return false
@@ -8,6 +9,7 @@ namespace power {
     export function poke() {}
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace scene {
     export const SCREEN_CLEAR_PRIORITY = 1;
     export const UPDATE_INTERVAL_PRIORITY = 19;
@@ -32,6 +34,7 @@ class Scene {
     buttonEventHandlers: controller.ButtonEventHandlerState[];
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace game {
     export let stats = false;
     let inited = false
@@ -72,6 +75,7 @@ namespace game {
      */
     //% group="Gameplay"
     //% help=game/paint weight=10 afterOnStart=true
+    //% blockHidden=true
     export function onPaint(a: () => void): void {
         if (!a) return;
         control.eventContext().registerFrameHandler(scene.RENDER_SPRITES_PRIORITY - 1, a);
@@ -83,6 +87,7 @@ namespace game {
      */
     //% group="Gameplay"
     //% help=game/shade weight=10 afterOnStart=true
+    //% blockHidden=true
     export function onShade(a: () => void): void {
         if (!a) return;
         control.eventContext().registerFrameHandler(scene.RENDER_SPRITES_PRIORITY, a);
@@ -90,6 +95,8 @@ namespace game {
 
 }
 
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller {
     export function _player1() {
         return new Controller(1, undefined)

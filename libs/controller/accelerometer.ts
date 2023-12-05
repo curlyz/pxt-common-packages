@@ -67,6 +67,9 @@ enum ControllerDimension {
     Strength = 3,
 }
 
+//% advance=true
+//% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace controller {
     /**
      * Do something when a gesture happens (like shaking the board).
@@ -79,6 +82,7 @@ namespace controller {
     //% gesture.fieldOptions.width=220
     //% gesture.fieldOptions.columns=3
     //% group="Extras"
+    //% blockHidden=true //gb.override: hide the irrelevant block
     export function onGesture(gesture: ControllerGesture, handler: () => void) {
         controller.__internal.onGesture(gesture, handler);
     }
@@ -104,6 +108,7 @@ namespace controller {
     //% dimension.fieldOptions.width=180
     //% dimension.fieldOptions.columns=2
     //% group="Extras"
+    //% blockHidden=true //gb.override: hide the irrelevant block
     export function acceleration(dimension: ControllerDimension): number {
         return controller.__internal.acceleration(dimension);
     }

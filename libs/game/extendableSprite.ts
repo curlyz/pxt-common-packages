@@ -1,3 +1,4 @@
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace sprites {
     /**
      * A version of the Sprite class that is easier to extend.
