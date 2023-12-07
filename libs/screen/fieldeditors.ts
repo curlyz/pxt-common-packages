@@ -75,6 +75,12 @@ namespace images {
      * An image
      * @param image the image
      */
+    //% blockId=image_picker block="$image" shim=TD_ID
+    //% image.fieldEditor="sprite"
+    //% image.fieldOptions.taggedTemplate="img"
+    //% image.fieldOptions.decompileIndirectFixedInstances="true"
+    //% image.fieldOptions.decompileArgumentAsString="true"
+    //% weight=0 group="Create"
     export function _image(image: Image): Image {
         return image;
     }
