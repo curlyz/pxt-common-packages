@@ -25,10 +25,11 @@ namespace sprites {
             return true;
         }
 
+        //% blockHidden=true
         get z(): number {
             return this._z;
         }
-
+        //% blockHidden=true
         set z(v: number) {
             if (this._z !== v) {
                 this._z = v;

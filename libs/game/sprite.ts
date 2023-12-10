@@ -92,7 +92,6 @@ enum ScaleAnchor {
  * A sprite on the screen
  **/
 //% blockNamespace=sprites color="#3B6FEA" blockGap=8
-//% blockHidden=true
 class Sprite extends sprites.BaseSprite {
     _x: Fx8
     _y: Fx8
@@ -107,147 +106,77 @@ class Sprite extends sprites.BaseSprite {
     _width: Fx8 // scaled width
     _height: Fx8 // scaled height
 
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="x" callInDebugger
     get x(): number {
         return Fx.toFloat(Fx.add(this._x, Fx.div(this._width, Fx.twoFx8)));
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="x"
     set x(v: number) {
         this.left = v - (this.width / 2)
     }
-
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="y" callInDebugger
     get y(): number {
         return Fx.toFloat(Fx.add(this._y, Fx.div(this._height, Fx.twoFx8)));
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="y"
     set y(v: number) {
         this.top = v - (this.height / 2)
     }
-
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="vx (velocity x)" callInDebugger
     get vx(): number {
         return Fx.toFloat(this._vx)
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="vx (velocity x)"
     set vx(v: number) {
         this._vx = Fx8(v)
     }
-
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="vy (velocity y)" callInDebugger
     get vy(): number {
         return Fx.toFloat(this._vy)
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="vy (velocity y)"
     set vy(v: number) {
         this._vy = Fx8(v)
     }
-
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="ax (acceleration x)" callInDebugger
     get ax(): number {
         return Fx.toFloat(this._ax)
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="ax (acceleration x)"
     set ax(v: number) {
         this._ax = Fx8(v)
     }
-
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="ay (acceleration y)" callInDebugger
     get ay(): number {
         return Fx.toFloat(this._ay)
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="ay (acceleration y)"
     set ay(v: number) {
         this._ay = Fx8(v)
     }
 
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="fx (friction x)" callInDebugger
     get fx(): number {
         return Fx.toFloat(this._fx)
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="fx (friction x)"
     set fx(v: number) {
         this._fx = Fx8(Math.max(0, v))
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="fy (friction y)" callInDebugger
     get fy(): number {
         return Fx.toFloat(this._fy)
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="fy (friction y)"
     set fy(v: number) {
         this._fy = Fx8(Math.max(0, v))
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="sx (scale x)" callInDebugger
     get sx(): number {
         return Fx.toFloat(this._sx);
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="sx (scale x)"
     set sx(v: number) {
         const x = this.x;
         this._sx = Fx8(Math.max(0, v));
         this.recalcSize();
         this.left = x - this.width / 2;
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="sy (scale y)" callInDebugger
     get sy(): number {
         return Fx.toFloat(this._sy);
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="sy (scale y)"
+
     set sy(v: number) {
         const y = this.y;
         this._sy = Fx8(Math.max(0, v));
         this.recalcSize();
         this.top = y - this.height / 2;
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="scale" callInDebugger
     get scale(): number {
         return Math.max(this.sx, this.sy);
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="scale"
     set scale(v: number) {
         this.sx = this.sy = v;
     }
@@ -257,11 +186,13 @@ class Sprite extends sprites.BaseSprite {
      * Custom data
      */
     //%
+    //% blockHidden=true
     get data(): any {
         if (!this._data) this._data = {};
         return this._data;
     }
 
+    //% blockHidden=true
     set data(value: any) {
         this._data = value;
     }
@@ -283,9 +214,6 @@ class Sprite extends sprites.BaseSprite {
      * Time to live in milliseconds. The lifespan decreases by 1 on each millisecond
      * and the sprite gets destroyed when it reaches 0.
      */
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="lifespan"
     lifespan: number;
     private _image: Image;
     private _obstacles: sprites.Obstacle[];
@@ -400,28 +328,16 @@ class Sprite extends sprites.BaseSprite {
         return this._sx !== Fx.oneFx8 || this._sy !== Fx.oneFx8;
     }
 
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="width" callInDebugger
     get width() {
         return Fx.toFloat(this._width);
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="height" callInDebugger
     get height() {
         return Fx.toFloat(this._height);
     }
 
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="left" callInDebugger
     get left() {
         return Fx.toFloat(this._x)
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="left"
     set left(value: number) {
         const physics = game.currentScene().physicsEngine;
         physics.moveSprite(
@@ -434,28 +350,16 @@ class Sprite extends sprites.BaseSprite {
         );
     }
 
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="right" callInDebugger
     get right() {
         return this.left + this.width
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="right"
     set right(value: number) {
         this.left = value - this.width
     }
 
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="top" callInDebugger
     get top() {
         return Fx.toFloat(this._y);
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="top"
     set top(value: number) {
         const physics = game.currentScene().physicsEngine;
         physics.moveSprite(
@@ -468,15 +372,9 @@ class Sprite extends sprites.BaseSprite {
         );
     }
 
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="bottom" callInDebugger
     get bottom() {
         return this.top + this.height;
     }
-    //% blockHidden=true
-	//% group="Physics" blockSetVariable="mySprite"
-    //% blockCombine block="bottom"
     set bottom(value: number) {
         this.top = value - this.height;
     }

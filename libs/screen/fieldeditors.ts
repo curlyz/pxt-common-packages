@@ -4,17 +4,8 @@
 //% weight=70 icon="\uf03e" color="#a5b1c2"
 //% advanced=true
 namespace images {
-    //% blockId=screen_image_picker block="%img"
-    //% shim=TD_ID
-    //% img.fieldEditor="sprite"
-    //% img.fieldOptions.taggedTemplate="img"
-    //% img.fieldOptions.decompileIndirectFixedInstances="true"
-    //% img.fieldOptions.decompileArgumentAsString="true"
-    //% img.fieldOptions.filter="!tile !dialog !background"
-    //% weight=100 group="Create" duplicateShadowOnDrag
-    //% help=images/sprite-image
     export function _spriteImage(img: Image) {
-        return img
+        return img;
     }
 
     //% blockId=background_image_picker block="%img"
@@ -28,7 +19,7 @@ namespace images {
     //% weight=100 group="Create"
     //% blockHidden=1 duplicateShadowOnDrag
     export function _screenImage(img: Image) {
-        return img
+        return img;
     }
 
     //% blockId=tilemap_image_picker block="%img"
@@ -40,7 +31,7 @@ namespace images {
     //% weight=100 group="Create"
     //% blockHidden=1 duplicateShadowOnDrag
     export function _tileMapImage(img: Image) {
-        return img
+        return img;
     }
 
     //% blockId=tile_image_picker block="%img"
@@ -53,7 +44,7 @@ namespace images {
     //% weight=100 group="Create"
     //% blockHidden=1 duplicateShadowOnDrag
     export function _tileImage(img: Image) {
-        return img
+        return img;
     }
 
     //% blockId=tileset_tile_picker block="%tile"
@@ -63,7 +54,7 @@ namespace images {
     //% weight=10 blockNamespace="scene" group="Tiles"
     //% blockHidden=1 duplicateShadowOnDrag
     export function _tile(tile: Image) {
-        return tile
+        return tile;
     }
 
     //% blockId=dialog_image_picker block="%img"
@@ -77,20 +68,13 @@ namespace images {
     //% weight=100 group="Create"
     //% blockHidden=1 duplicateShadowOnDrag
     export function _dialogImage(img: Image) {
-        return img
+        return img;
     }
 
     /**
      * An image
      * @param image the image
      */
-    //% blockId=image_picker block="$image" shim=TD_ID
-    //% image.fieldEditor="sprite"
-    //% image.fieldOptions.taggedTemplate="img"
-    //% image.fieldOptions.decompileIndirectFixedInstances="true"
-    //% image.fieldOptions.decompileArgumentAsString="true"
-    //% weight=0 group="Create"
-    //% help=images/image
     export function _image(image: Image): Image {
         return image;
     }
