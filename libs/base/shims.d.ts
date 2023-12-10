@@ -118,6 +118,7 @@ declare namespace loops {
      */
     //% help=loops/forever weight=100 afterOnStart=true deprecated=true
     //% blockId=forever_deprecated block="forever" blockAllowMultiple=1 shim=loops::forever
+    //% block.loc.vi="lặp vô tận"
     function forever(a: () => void): void;
 
     /**
