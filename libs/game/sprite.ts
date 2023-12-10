@@ -92,7 +92,6 @@ enum ScaleAnchor {
  * A sprite on the screen
  **/
 //% blockNamespace=sprites color="#3B6FEA" blockGap=8
-//% blockHidden=true
 class Sprite extends sprites.BaseSprite {
     _x: Fx8;
     _y: Fx8;

@@ -24,77 +24,45 @@ namespace tiles {
             this._col = col;
             this._row = row;
         }
-
+        
         get tileMap() {
             return game.currentScene().tileMap;
         }
 
-        //% blockHidden=true
-        //% group="Locations" blockSetVariable="location"
-        //% blockCombine block="column"
-        //% weight=100
         get column() {
             return this._col;
         }
 
-        //% blockHidden=true
-        //% group="Locations" blockSetVariable="location"
-        //% blockCombine block="row"
-        //% weight=100
         get row() {
             return this._row;
         }
 
-        //% blockHidden=true
-        //% group="Locations" blockSetVariable="location"
-        //% blockCombine block="x"
-        //% weight=100
         get x(): number {
             const scale = this.tileMap.scale;
             return (this._col << scale) + (1 << (scale - 1));
         }
 
-        //% blockHidden=true
-        //% group="Locations" blockSetVariable="location"
-        //% blockCombine block="y"
-        //% weight=100
         get y(): number {
             const scale = this.tileMap.scale;
             return (this._row << scale) + (1 << (scale - 1));
         }
 
-        //% blockHidden=true
-        //% group="Locations" blockSetVariable="location"
-        //% blockCombine block="left"
-        //% weight=100
         get left(): number {
             return this._col << this.tileMap.scale;
         }
 
-        //% blockHidden=true
-        //% group="Locations" blockSetVariable="location"
-        //% blockCombine block="top"
-        //% weight=100
         get top(): number {
             return this._row << this.tileMap.scale;
         }
 
-        //% blockHidden=true
-        //% group="Locations" blockSetVariable="location"
-        //% blockCombine block="right"
-        //% weight=100
         get right(): number {
             return this.left + (1 << this.tileMap.scale);
         }
 
-        //% blockHidden=true
-        //% group="Locations" blockSetVariable="location"
-        //% blockCombine block="bottom"
-        //% weight=100
         get bottom(): number {
             return this.top + (1 << this.tileMap.scale);
         }
-
+        
         get tileSet(): number {
             return this.tileMap.getTileIndex(this._col, this._row);
         }
