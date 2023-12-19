@@ -2,7 +2,7 @@ enum ControllerEvent {
     //% block="connected"
     Connected = 1,
     //% block="disconnected"
-    Disconnected = 2
+    Disconnected = 2,
 }
 
 /**
@@ -17,20 +17,20 @@ namespace controller {
     let _players: Controller[];
     game.addScenePopHandler(() => {
         const stateWhenPushed = game.currentScene().controllerConnectionState;
-        if (!stateWhenPushed)
-            return;
+        if (!stateWhenPushed) return;
         for (let i = 0; i < stateWhenPushed.length; i++) {
             const p = _players[i];
-            if (p && (!!stateWhenPushed[i] != !!p.connected)) {
+            if (p && !!stateWhenPushed[i] != !!p.connected) {
                 // connection state changed while in another scene; raise the event.
                 control.raiseEvent(
                     p.id,
-                    p.connected ? ControllerEvent.Connected : ControllerEvent.Disconnected
+                    p.connected
+                        ? ControllerEvent.Connected
+                        : ControllerEvent.Disconnected
                 );
             }
         }
-
-    })
+    });
     game.addScenePushHandler(oldScene => {
         oldScene.controllerConnectionState = [];
         for (let i = 0; i < _players.length; i++) {
@@ -38,7 +38,7 @@ namespace controller {
                 oldScene.controllerConnectionState[i] = _players[i].connected;
             }
         }
-    })
+    });
 
     function addController(ctrl: Controller) {
         if (!_players) {
@@ -49,7 +49,15 @@ namespace controller {
 
     export function _player1(): Controller {
         if (!_players || !_players[0])
-            new Controller(1, [controller.left, controller.up, controller.right, controller.down, controller.A, controller.B, controller.menu]);
+            new Controller(1, [
+                controller.left,
+                controller.up,
+                controller.right,
+                controller.down,
+                controller.A,
+                controller.B,
+                controller.menu,
+            ]);
         return _players[0];
     }
 
@@ -60,16 +68,12 @@ namespace controller {
 
     export class ControlledSprite {
         public _inputLastFrame: boolean;
-        constructor(
-            public s: Sprite,
-            public vx: number,
-            public vy: number
-        ) { }
+        constructor(public s: Sprite, public vx: number, public vy: number) {}
     }
 
     export function _moveSprites() {
         // todo: move to current scene
-        control.enablePerfCounter("controller")
+        control.enablePerfCounter("controller");
         players().forEach(ctrl => ctrl.__preUpdate());
     }
 
@@ -87,8 +91,7 @@ namespace controller {
             this._connected = false;
             this.playerIndex = playerIndex;
             this.analog = false;
-            if (buttons)
-                this.buttons = buttons;
+            if (buttons) this.buttons = buttons;
             else {
                 this.buttons = [];
                 const leftId = 1 + (this.playerIndex - 1) * 7;
@@ -183,7 +186,7 @@ namespace controller {
          * @param vy The velocity used for vertical movement when up/down is pressed
          */
         //% blockHidden=true
-	    //% blockId="ctrlgame_control_sprite" block="%controller move $sprite=variables_get(mySprite) with buttons||vx $vx vy $vy"
+        //% blockId="ctrlgame_control_sprite" block="%controller move $sprite=variables_get(mySprite) with buttons||vx $vx vy $vy"
         //% weight=100
         //% expandableArgumentMode="toggle"
         //% vx.defl=100 vy.defl=100
@@ -198,12 +201,18 @@ namespace controller {
 
         stopControllingSprite(sprite: Sprite) {
             if (!sprite) return;
-            this._controlledSprites = this._controlledSprites.filter(s => s.s.id !== sprite.id);
+            this._controlledSprites = this._controlledSprites.filter(
+                s => s.s.id !== sprite.id
+            );
         }
 
         // use this instead of movesprite internally to avoid adding the "multiplayer" part
         // to the compiled program
-        _moveSpriteInternal(sprite: Sprite, vx: number = 100, vy: number = 100) {
+        _moveSpriteInternal(
+            sprite: Sprite,
+            vx: number = 100,
+            vy: number = 100
+        ) {
             if (!sprite) return;
             if (!this._controlledSprites) this._controlledSprites = [];
             let cp = this._controlledSprites.find(cp => cp.s.id == sprite.id);
@@ -212,10 +221,10 @@ namespace controller {
                 this._controlledSprites.push(cp);
             }
             if (cp.vx && vx == 0) {
-                cp.s.vx = 0
+                cp.s.vx = 0;
             }
             if (cp.vy && vy == 0) {
-                cp.s.vy = 0
+                cp.s.vy = 0;
             }
             cp.vx = vx;
             cp.vy = vy;
@@ -230,11 +239,15 @@ namespace controller {
          */
         //% weight=99 blockGap=8
         //% blockHidden=true
-	    //% blockId=ctrlonbuttonevent block="on %controller %button **button** %event"
+        //% blockId=ctrlonbuttonevent block="on %controller %button **button** %event"
         //% group="Multiplayer"
         //% help=controller/on-button-event
         //% parts="multiplayer"
-        onButtonEvent(btn: ControllerButton, event: ControllerButtonEvent, handler: () => void) {
+        onButtonEvent(
+            btn: ControllerButton,
+            event: ControllerButtonEvent,
+            handler: () => void
+        ) {
             this.button(btn).onEvent(event, handler);
         }
 
@@ -245,7 +258,7 @@ namespace controller {
          */
         //% weight=99 blockGap=8
         //% blockHidden=true
-	    //% blockId=ctrlonevent block="on %controller %event"
+        //% blockId=ctrlonevent block="on %controller %event"
         //% group="Multiplayer"
         //% help=controller/on-event
         //% parts="multiplayer"
@@ -260,16 +273,21 @@ namespace controller {
         set connected(value: boolean) {
             if (value != this._connected) {
                 this._connected = value;
-                control.raiseEvent(this.id, this._connected ? ControllerEvent.Connected : ControllerEvent.Disconnected);
+                control.raiseEvent(
+                    this.id,
+                    this._connected
+                        ? ControllerEvent.Connected
+                        : ControllerEvent.Disconnected
+                );
             }
         }
 
         /**
          * Indicates if the button is currently pressed
-        */
+         */
         //% weight=96 blockGap=8 help=controller/button/is-pressed
         //% blockHidden=true
-	    //% blockId=ctrlispressed block="is %controller %button **button** pressed"
+        //% blockId=ctrlispressed block="is %controller %button **button** pressed"
         //% group="Multiplayer"
         //% parts="multiplayer"
         isPressed(btn: ControllerButton): boolean {
@@ -282,7 +300,7 @@ namespace controller {
          */
         //% weight=50 blockGap=8 help=controller/dx
         //% blockHidden=true
-	    //% blockId=ctrldx block="%controller dx (left-right buttons)||scaled by %step"
+        //% blockId=ctrldx block="%controller dx (left-right buttons)||scaled by %step"
         //% step.defl=100
         //% group="Multiplayer"
         //% parts="multiplayer"
@@ -297,13 +315,17 @@ namespace controller {
             if (!ctx) return 0;
 
             if (this.analog)
-                return (this.right.pressureLevel() - this.left.pressureLevel()) / 512 * ctx.deltaTime * step
+                return (
+                    ((this.right.pressureLevel() - this.left.pressureLevel()) /
+                        512) *
+                    ctx.deltaTime *
+                    step
+                );
             if (this.left.isPressed()) {
-                if (this.right.isPressed()) return 0
+                if (this.right.isPressed()) return 0;
                 else return -step * ctx.deltaTime;
-            }
-            else if (this.right.isPressed()) return step * ctx.deltaTime
-            else return 0
+            } else if (this.right.isPressed()) return step * ctx.deltaTime;
+            else return 0;
         }
 
         /**
@@ -312,7 +334,7 @@ namespace controller {
          */
         //% weight=49 help=keys/dy
         //% blockHidden=true
-	    //% blockId=ctrldy block="%controller dy (up-down buttons)||scaled by %step"
+        //% blockId=ctrldy block="%controller dy (up-down buttons)||scaled by %step"
         //% step.defl=100
         //% group="Multiplayer"
         //% parts="multiplayer"
@@ -327,13 +349,17 @@ namespace controller {
             if (!ctx) return 0;
 
             if (this.analog)
-                return (this.down.pressureLevel() - this.up.pressureLevel()) / 512 * ctx.deltaTime * step
+                return (
+                    ((this.down.pressureLevel() - this.up.pressureLevel()) /
+                        512) *
+                    ctx.deltaTime *
+                    step
+                );
             if (this.up.isPressed()) {
-                if (this.down.isPressed()) return 0
+                if (this.down.isPressed()) return 0;
                 else return -step * ctx.deltaTime;
-            }
-            else if (this.down.isPressed()) return step * ctx.deltaTime
-            else return 0
+            } else if (this.down.isPressed()) return step * ctx.deltaTime;
+            else return 0;
         }
 
         __preUpdate() {
@@ -341,30 +367,37 @@ namespace controller {
 
             let deadSprites = false;
 
-            let svx = 0
-            let svy = 0
+            let svx = 0;
+            let svy = 0;
 
             if (this.analog) {
-                svx = (this.right.pressureLevel() - this.left.pressureLevel()) >> 1
-                svy = (this.down.pressureLevel() - this.up.pressureLevel()) >> 1
+                svx =
+                    (this.right.pressureLevel() - this.left.pressureLevel()) >>
+                    1;
+                svy =
+                    (this.down.pressureLevel() - this.up.pressureLevel()) >> 1;
             } else {
-                svx = (this.right.isPressed() ? 256 : 0) - (this.left.isPressed() ? 256 : 0)
-                svy = (this.down.isPressed() ? 256 : 0) - (this.up.isPressed() ? 256 : 0)
+                svx =
+                    (this.right.isPressed() ? 256 : 0) -
+                    (this.left.isPressed() ? 256 : 0);
+                svy =
+                    (this.down.isPressed() ? 256 : 0) -
+                    (this.up.isPressed() ? 256 : 0);
             }
 
-            let svxInCricle = svx
-            let svyInCircle = svy
+            let svxInCricle = svx;
+            let svyInCircle = svy;
 
             // here svx/y are -256 to 256 range
-            const sq = svx * svx + svy * svy
+            const sq = svx * svx + svy * svy;
             // we want to limit svx/y to be within circle of 256 radius
-            const max = 256 * 256
+            const max = 256 * 256;
             // is it outside the circle?
             if (sq > max) {
                 // if so, store the vector scaled down to fit in the circle
-                const scale = Math.sqrt(max / sq)
-                svxInCricle = scale * svx | 0
-                svyInCircle = scale * svy | 0
+                const scale = Math.sqrt(max / sq);
+                svxInCricle = (scale * svx) | 0;
+                svyInCircle = (scale * svy) | 0;
             }
 
             this._controlledSprites.forEach(controlledSprite => {
@@ -382,24 +415,24 @@ namespace controller {
                 if (svx || svy) {
                     if (vx && vy) {
                         // if moving in both vx/vy use speed vector constrained to be within circle
-                        s._vx = Fx.imul(svxInCricle as any as Fx8, vx)
-                        s._vy = Fx.imul(svyInCircle as any as Fx8, vy)
+                        s._vx = Fx.imul(svxInCricle as any as Fx8, vx);
+                        s._vy = Fx.imul(svyInCircle as any as Fx8, vy);
                     } else if (vx) {
                         // otherwise don't bother
-                        s._vx = Fx.imul(svx as any as Fx8, vx)
+                        s._vx = Fx.imul(svx as any as Fx8, vx);
                     } else if (vy) {
-                        s._vy = Fx.imul(svy as any as Fx8, vy)
+                        s._vy = Fx.imul(svy as any as Fx8, vy);
                     }
                     controlledSprite._inputLastFrame = true;
-                }
-                else {
+                } else {
                     controlledSprite._inputLastFrame = false;
                 }
             });
 
             if (deadSprites)
-                this._controlledSprites = this._controlledSprites
-                    .filter(s => !(s.s.flags & sprites.Flag.Destroyed));
+                this._controlledSprites = this._controlledSprites.filter(
+                    s => !(s.s.flags & sprites.Flag.Destroyed)
+                );
         }
 
         __update(dtms: number) {
@@ -412,7 +445,7 @@ namespace controller {
             let b = 0;
             for (let i = 0; this.buttons.length; ++i)
                 b |= (this.buttons[i].isPressed() ? 1 : 0) << i;
-            buf[offset] = b
+            buf[offset] = b;
             return buf;
         }
     }
@@ -421,7 +454,7 @@ namespace controller {
      * Called by the game engine to update and/or raise events
      */
     export function __update(dt: number) {
-        const dtms = (dt * 1000) | 0
+        const dtms = (dt * 1000) | 0;
         players().forEach(ctrl => ctrl.__update(dtms));
     }
 
@@ -439,7 +472,7 @@ namespace controller {
      * @param vy The velocity used for vertical movement when up/down is pressed
      */
     //% blockHidden=true
-	//% blockId="game_control_sprite" block="move $sprite=variables_get(mySprite) with buttons||vx $vx vy $vy"
+    //% blockId="game_control_sprite" block="move $sprite=variables_get(mySprite) with buttons||vx $vx vy $vy"
     //% weight=100
     //% expandableArgumentMode="toggle"
     //% vx.defl=100 vy.defl=100
@@ -447,7 +480,11 @@ namespace controller {
     //% group="Single Player"
     //% vx.shadow=spriteSpeedPicker
     //% vy.shadow=spriteSpeedPicker
-    export function moveSprite(sprite: Sprite, vx: number = 100, vy: number = 100) {
+    export function moveSprite(
+        sprite: Sprite,
+        vx: number = 100,
+        vy: number = 100
+    ) {
         _player1()._moveSpriteInternal(sprite, vx, vy);
     }
 
@@ -457,7 +494,7 @@ namespace controller {
      */
     //% weight=50 blockGap=8 help=controller/dx
     //% blockHidden=true
-	//% blockId=keydx block="dx (left-right buttons)||scaled by %step"
+    //% blockId=keydx block="dx (left-right buttons)||scaled by %step"
     //% step.defl=100
     //% group="Single Player"
     export function dx(step: number = 100) {
@@ -470,7 +507,7 @@ namespace controller {
      */
     //% weight=49 help=keys/dy
     //% blockHidden=true
-	//% blockId=keydy block="dy (up-down buttons)||scaled by %step"
+    //% blockId=keydy block="dy (up-down buttons)||scaled by %step"
     //% step.defl=100
     //% group="Single Player"
     export function dy(step: number = 100) {
