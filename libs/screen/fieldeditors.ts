@@ -4,6 +4,15 @@
 //% weight=70 icon="\uf03e" color="#a5b1c2"
 //% advanced=true
 namespace images {
+    //% blockId=screen_image_picker block="%img"
+    //% shim=TD_ID
+    //% img.fieldEditor="sprite"
+    //% img.fieldOptions.taggedTemplate="img"
+    //% img.fieldOptions.decompileIndirectFixedInstances="true"
+    //% img.fieldOptions.decompileArgumentAsString="true"
+    //% img.fieldOptions.filter="!tile !dialog !background"
+    //% weight=100 group="Create" duplicateShadowOnDrag
+    //% help=images/sprite-image
     export function _spriteImage(img: Image) {
         return img;
     }
@@ -81,6 +90,7 @@ namespace images {
     //% image.fieldOptions.decompileIndirectFixedInstances="true"
     //% image.fieldOptions.decompileArgumentAsString="true"
     //% weight=0 group="Create"
+    //% help=images/image
     export function _image(image: Image): Image {
         return image;
     }

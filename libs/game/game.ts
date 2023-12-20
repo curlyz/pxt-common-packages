@@ -15,7 +15,7 @@ namespace game {
         //% block="low score"
         LowScore,
         //% block="none"
-        None
+        None,
     }
 
     // To stay synchronized with https://github.com/microsoft/pxt/blob/stable8.5/webapp/src/components/ImageEditor/sprite/Palette.tsx#L98.
@@ -39,7 +39,7 @@ namespace game {
         DarkPurple = 0xc,
         Tan = 0xd,
         Brown = 0xe,
-        Black = 0xf
+        Black = 0xf,
     }
 
     export class GameOverConfig {
@@ -69,7 +69,7 @@ namespace game {
             this.winSound = music.melodyPlayable(music.powerUp);
             this.loseSound = music.melodyPlayable(music.wawawawaa);
             this.winSoundLooping = false;
-            this.loseSoundLooping  = false;
+            this.loseSoundLooping = false;
             this.winMessage = "YOU WIN!";
             this.winMessageMultiplayer = "${WINNER} WINS!";
             this.loseMessage = "GAME OVER";
@@ -85,7 +85,11 @@ namespace game {
             if (explicit) this.scoringTypeSetByUser = true;
         }
 
-        setEffect(win: boolean, effect: effects.BackgroundEffect, explicit: boolean) {
+        setEffect(
+            win: boolean,
+            effect: effects.BackgroundEffect,
+            explicit: boolean
+        ) {
             if (!explicit && this.effectSetByUser) return;
             if (win) this.winEffect = effect;
             else this.loseEffect = effect;
@@ -95,7 +99,12 @@ namespace game {
             return win ? this.winEffect : this.loseEffect;
         }
 
-        setSound(win: boolean, sound: music.Playable, looping: boolean, explicit: boolean) {
+        setSound(
+            win: boolean,
+            sound: music.Playable,
+            looping: boolean,
+            explicit: boolean
+        ) {
             if (!explicit && this.soundSetByUser) return;
             if (win) {
                 this.winSound = sound;
@@ -124,8 +133,7 @@ namespace game {
                 return win ? this.winMessage : this.loseMessage;
             else if (preferMultiplayer)
                 return win ? this.winMessageMultiplayer : this.loseMessage;
-            else
-                return win ? this.winMessage : this.loseMessage;
+            else return win ? this.winMessage : this.loseMessage;
         }
     }
 
@@ -133,7 +141,7 @@ namespace game {
     export const gameOverConfig = () => {
         if (!_gameOverConfig) _gameOverConfig = new GameOverConfig();
         return _gameOverConfig;
-    }
+    };
 
     let _scene: scene.Scene;
     let _sceneStack: scene.Scene[];
@@ -151,12 +159,12 @@ namespace game {
     let __isOver = false;
 
     export function setWaitAnyButton(f: () => void) {
-        __waitAnyButton = f
+        __waitAnyButton = f;
     }
 
     export function waitAnyButton() {
-        if (__waitAnyButton) __waitAnyButton()
-        else pause(3000)
+        if (__waitAnyButton) __waitAnyButton();
+        else pause(3000);
     }
 
     export function eventContext(): control.EventContext {
@@ -164,7 +172,7 @@ namespace game {
         return _scene.eventContext;
     }
 
-    function init(forceNewScene ?: boolean) {
+    function init(forceNewScene?: boolean) {
         if (!_scene || forceNewScene) {
             _scene = new scene.Scene(control.pushEventContext(), _scene);
         }
@@ -172,7 +180,7 @@ namespace game {
     }
 
     export function pushScene() {
-        const oldScene = game.currentScene()
+        const oldScene = game.currentScene();
         particles.clearAll();
         particles.disableAll();
         if (!_sceneStack) _sceneStack = [];
@@ -185,7 +193,7 @@ namespace game {
     }
 
     export function popScene() {
-        const oldScene = game.currentScene()
+        const oldScene = game.currentScene();
         if (_sceneStack && _sceneStack.length) {
             // pop scenes from the stack
             _scene = _sceneStack.pop();
@@ -196,8 +204,7 @@ namespace game {
             _scene = undefined;
         }
 
-        if (_scene)
-            particles.enableAll();
+        if (_scene) particles.enableAll();
 
         if (_scenePopHandlers) {
             _scenePopHandlers.forEach(cb => cb(oldScene));
@@ -206,25 +213,27 @@ namespace game {
 
     function showDialogBackground(h: number, c: number) {
         const top = (screen.height - h) >> 1;
-        screen.fillRect(0, top, screen.width, h, 0)
-        screen.drawLine(0, top, screen.width, top, 1)
-        screen.drawLine(0, top + h - 1, screen.width, top + h - 1, 1)
+        screen.fillRect(0, top, screen.width, h, 0);
+        screen.drawLine(0, top, screen.width, top, 1);
+        screen.drawLine(0, top + h - 1, screen.width, top + h - 1, 1);
 
         return top;
     }
 
-    export function showDialog(title: string, subtitle: string, footer?: string) {
+    export function showDialog(
+        title: string,
+        subtitle: string,
+        footer?: string
+    ) {
         init();
         const titleFont = image.getFontForText(title || "");
-        const subFont = image.getFontForText(subtitle || "")
+        const subFont = image.getFontForText(subtitle || "");
         const footerFont = image.getFontForText(footer || "");
         let h = 8;
-        if (title)
-            h += titleFont.charHeight;
-        if (subtitle)
-            h += 2 + subFont.charHeight
+        if (title) h += titleFont.charHeight;
+        if (subtitle) h += 2 + subFont.charHeight;
         h += 8;
-        const top = showDialogBackground(h, 9)
+        const top = showDialogBackground(h, 9);
         let y = top + 8;
         if (title) {
             screen.print(title, 8, y, screen.isMono ? 1 : 7, titleFont);
@@ -236,7 +245,13 @@ namespace game {
         }
         if (footer) {
             const footerTop = screen.height - footerFont.charHeight - 4;
-            screen.fillRect(0, footerTop, screen.width, footerFont.charHeight + 4, 0);
+            screen.fillRect(
+                0,
+                footerTop,
+                screen.width,
+                footerFont.charHeight + 4,
+                0
+            );
             screen.drawLine(0, footerTop, screen.width, footerTop, 1);
             screen.print(
                 footer,
@@ -244,7 +259,7 @@ namespace game {
                 screen.height - footerFont.charHeight - 2,
                 1,
                 footerFont
-            )
+            );
         }
     }
 
@@ -263,7 +278,10 @@ namespace game {
     //% blockGap=8
     //% help=game/set-game-over-effect
     //% blockHidden=true
-    export function setGameOverEffect(win: boolean, effect: effects.BackgroundEffect) {
+    export function setGameOverEffect(
+        win: boolean,
+        effect: effects.BackgroundEffect
+    ) {
         init();
         const goc = game.gameOverConfig();
         goc.setEffect(win, effect, true);
@@ -285,9 +303,13 @@ namespace game {
     //% group="Game Over"
     //% weight=80
     //% blockGap=8
-    //% help=game/set-game-over-sound
+    //% help=game/set-game-over-playable
     //% blockHidden=true
-    export function setGameOverPlayable(win: boolean, sound: music.Playable, looping: boolean) {
+    export function setGameOverPlayable(
+        win: boolean,
+        sound: music.Playable,
+        looping: boolean
+    ) {
         init();
         const goc = game.gameOverConfig();
         goc.setSound(win, sound, looping, true);
@@ -303,7 +325,7 @@ namespace game {
     /**
      * Set the message that displays when the game is over
      * @param win whether the message should show on a win (true) or lose (false)
-     * @param message 
+     * @param message
      */
     //% blockId=game_setgameovermessage
     //% block="use message $message for $win"
@@ -356,7 +378,10 @@ namespace game {
     //% weight=80 help=game/over
     //% deprecated=true
     //% blockHidden=true
-    export function over(win: boolean = false, effect?: effects.BackgroundEffect) {
+    export function over(
+        win: boolean = false,
+        effect?: effects.BackgroundEffect
+    ) {
         // Match legacy behavior unless effect was set by user
         const goc = game.gameOverConfig();
         goc.setEffect(win, effect, false);
@@ -389,11 +414,19 @@ namespace game {
         } else {
             const goc = game.gameOverConfig();
 
-            const judged = !winnerOverride && goc.scoringType !== ScoringType.None;
+            const judged =
+                !winnerOverride && goc.scoringType !== ScoringType.None;
             const playersWithScores = info.playersWithScores();
             const prevBestScore = judged && info.highScore();
             const winner = judged && win && info.winningPlayer();
-            const scores = playersWithScores.map(player => new GameOverPlayerScore(player.number, player.impl.score(), player === winner));
+            const scores = playersWithScores.map(
+                player =>
+                    new GameOverPlayerScore(
+                        player.number,
+                        player.impl.score(),
+                        player === winner
+                    )
+            );
 
             // Save all scores. Dependency Note: this action triggers Kiosk to exit the simulator and show the high score screen.
             info.saveAllScores();
@@ -403,12 +436,15 @@ namespace game {
                 info.saveHighScore();
             }
 
-            const preferMultiplayer = !!winnerOverride || (judged && info.multiplayerScoring());
+            const preferMultiplayer =
+                !!winnerOverride || (judged && info.multiplayerScoring());
             const message = goc.getMessage(win, preferMultiplayer);
             const effect = goc.getEffect(win);
             const sound = goc.getSound(win);
             const looping = goc.getSoundLooping(win);
-            const playbackMode = looping ? music.PlaybackMode.LoopingInBackground : music.PlaybackMode.InBackground;
+            const playbackMode = looping
+                ? music.PlaybackMode.LoopingInBackground
+                : music.PlaybackMode.InBackground;
 
             // releasing memory and clear fibers. Do not add anything that releases the fiber until background is set below,
             // or screen will be cleared on the new frame and will not appear as background in the game over screen.
@@ -424,7 +460,14 @@ namespace game {
 
             pause(400);
 
-            const overDialog = new GameOverDialog(win, message, judged, scores, prevBestScore, winnerOverride);
+            const overDialog = new GameOverDialog(
+                win,
+                message,
+                judged,
+                scores,
+                prevBestScore,
+                winnerOverride
+            );
             scene.createRenderable(scene.HUD_Z, target => {
                 overDialog.update();
                 target.drawTransparentImage(
@@ -440,7 +483,6 @@ namespace game {
             control.reset();
         }
     }
-
 
     // Indicates whether the fiber needs to be created
     let foreverRunning = false;
@@ -501,7 +543,6 @@ namespace game {
         scene.createRenderable(scene.ON_SHADE_Z, a);
     }
 
-
     /**
      * Register a handler that runs whenever a scene is pushed onto the scene
      * stack. Useful for extensions that need to store/restore state as the
@@ -510,7 +551,9 @@ namespace game {
      *
      * @param handler Code to run when a scene is pushed onto the stack
      */
-    export function addScenePushHandler(handler: (oldScene: scene.Scene) => void) {
+    export function addScenePushHandler(
+        handler: (oldScene: scene.Scene) => void
+    ) {
         if (!_scenePushHandlers) _scenePushHandlers = [];
         if (_scenePushHandlers.indexOf(handler) < 0)
             _scenePushHandlers.push(handler);
@@ -522,7 +565,9 @@ namespace game {
      *
      * @param handler The handler to remove
      */
-    export function removeScenePushHandler(handler: (oldScene: scene.Scene) => void) {
+    export function removeScenePushHandler(
+        handler: (oldScene: scene.Scene) => void
+    ) {
         if (_scenePushHandlers) _scenePushHandlers.removeElement(handler);
     }
 
@@ -534,7 +579,9 @@ namespace game {
      *
      * @param handler Code to run when a scene is removed from the top of the stack
      */
-    export function addScenePopHandler(handler: (oldScene: scene.Scene) => void) {
+    export function addScenePopHandler(
+        handler: (oldScene: scene.Scene) => void
+    ) {
         if (!_scenePopHandlers) _scenePopHandlers = [];
         if (_scenePopHandlers.indexOf(handler) < 0)
             _scenePopHandlers.push(handler);
@@ -546,7 +593,9 @@ namespace game {
      *
      * @param handler The handler to remove
      */
-    export function removeScenePopHandler(handler: (oldScene: scene.Scene) => void) {
+    export function removeScenePopHandler(
+        handler: (oldScene: scene.Scene) => void
+    ) {
         if (_scenePopHandlers) _scenePopHandlers.removeElement(handler);
     }
 }
