@@ -64,6 +64,13 @@ interface Image {
      * Returns true if the provided image is the same as this image,
      * otherwise returns false.
      */
+    //% shim=ImageMethods::equals
+    //% blockNamespace="images" group="Compare"
+    //% block="$this is equal to image $other"
+    //% this.shadow=variables_get
+    //% this.defl="picture"
+    //% other.shadow=screen_image_picker
+    //% help=images/image/equals
     equals(other: Image): boolean;
 
     //% shim=ImageMethods::isStatic
