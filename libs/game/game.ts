@@ -404,6 +404,15 @@ namespace game {
         _gameOverImpl(true, player);
     }
 
+    function _mapScoreTypeToString(scoreType: ScoringType): string {
+        switch (scoreType) {
+            case ScoringType.HighScore: return "highscore";
+            case ScoringType.LowScore: return "lowscore";
+            case ScoringType.None: return "none";
+            default: return "none";
+        }
+    }
+
     function _gameOverImpl(win: boolean, winnerOverride?: number) {
         init();
         if (__isOver) return;
@@ -429,7 +438,8 @@ namespace game {
             );
 
             // Save all scores. Dependency Note: this action triggers Kiosk to exit the simulator and show the high score screen.
-            info.saveAllScores();
+            const scoreTypeString = _mapScoreTypeToString(goc.scoringType);
+            info.saveAllScores(scoreTypeString);
 
             // Save high score if this was a judged game and there was a winner (don't save in the LOSE case).
             if (judged && winner) {
