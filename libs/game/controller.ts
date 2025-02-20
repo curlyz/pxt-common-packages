@@ -3,7 +3,6 @@ enum ControllerEvent {
     Connected = 1,
     //% block="disconnected"
     Disconnected = 2,
-    Disconnected = 2,
 }
 
 /**
@@ -335,11 +334,7 @@ namespace controller {
          * Get the vertical movement, given the step and state of buttons
          * @param step the distance, eg: 100
          */
-<<<<<<< HEAD
-        //% weight=49 help=controller/dy
-=======
         //% weight=49 help=keys/dy
->>>>>>> 74a3fdc99a4d96912e3080f242ca00fa0b804b34
         //% blockHidden=true
         //% blockHidden=true
         //% blockId=ctrldy block="%controller dy (up-down buttons)||scaled by %step"
@@ -513,11 +508,7 @@ namespace controller {
      * Get the vertical movement, given the step and state of buttons
      * @param step the distance, eg: 100
      */
-<<<<<<< HEAD
-    //% weight=49 help=controller/dy
-=======
     //% weight=49 help=keys/dy
->>>>>>> 74a3fdc99a4d96912e3080f242ca00fa0b804b34
     //% blockHidden=true
     //% blockHidden=true
     //% blockId=keydy block="dy (up-down buttons)||scaled by %step"
