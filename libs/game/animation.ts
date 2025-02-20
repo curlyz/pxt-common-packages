@@ -5,6 +5,7 @@
 //% groups='["Animate", "Advanced"]'
 //% weight=5
 //% blockHidden=true //gb.override: hide the irrelevant block
+//% blockHidden=true //gb.override: hide the irrelevant block
 namespace animation {
     const stateNamespace = "__animation";
 
@@ -24,6 +25,7 @@ namespace animation {
 
     //% fixedInstances blockId=animation_path block="path %pathString"
     export class PathPreset {
+        constructor(public pathString: string) {}
         constructor(public pathString: string) {}
     }
 
@@ -73,12 +75,21 @@ namespace animation {
 
             if (numArgs === -1)
                 throw "Unknown path command '" + this.currentCommand + "'";
+            if (numArgs === -1)
+                throw "Unknown path command '" + this.currentCommand + "'";
 
             for (let i = 0; i < numArgs; i++) {
+                this.args.push(parseFloat(this.readNextToken()));
                 this.args.push(parseFloat(this.readNextToken()));
             }
 
             for (const arg of this.args) {
+                if (Number.isNaN(arg))
+                    throw (
+                        "Invalid argument for path command '" +
+                        this.currentCommand +
+                        "'"
+                    );
                 if (Number.isNaN(arg))
                     throw (
                         "Invalid argument for path command '" +
@@ -107,12 +118,21 @@ namespace animation {
                 this.strIndex < this.path.length
             ) {
                 this.strIndex++;
+            while (
+                this.path.charCodeAt(this.strIndex) === 32 &&
+                this.strIndex < this.path.length
+            ) {
+                this.strIndex++;
             }
 
             if (this.strIndex >= this.path.length) return undefined;
 
             const tokenStart = this.strIndex;
 
+            while (
+                this.path.charCodeAt(this.strIndex) !== 32 &&
+                this.strIndex < this.path.length
+            ) {
             while (
                 this.path.charCodeAt(this.strIndex) !== 32 &&
                 this.strIndex < this.path.length
@@ -165,6 +185,11 @@ namespace animation {
             target: Sprite,
             runningTime: number
         ): boolean {
+        public run(
+            interval: number,
+            target: Sprite,
+            runningTime: number
+        ): boolean {
             const nodeIndex = Math.floor(runningTime / interval); // The current node
             const nodeTime = runningTime % interval; // The time the current node has been animating
 
@@ -184,6 +209,7 @@ namespace animation {
                     this.lastY = target.y;
                 }
                 this.commandIndex++;
+                this.commandIndex++;
                 this.readNextCommand();
             }
 
@@ -195,6 +221,11 @@ namespace animation {
             return false;
         }
 
+        protected runCurrentCommand(
+            target: Sprite,
+            nodeTime: number,
+            intervalTime: number
+        ) {
         protected runCurrentCommand(
             target: Sprite,
             nodeTime: number,
@@ -315,6 +346,7 @@ namespace animation {
                         this.args[2],
                         this.args[3]
                     );
+                    );
                     break;
                 case "q": // q dx1 dy1 dx2 dy2
                     this.lastControlX = this.args[0] + this.lastX;
@@ -343,8 +375,13 @@ namespace animation {
                         this.lastY + this.lastY - this.lastControlY,
                         this.args[0],
                         this.args[1]
+                        this.args[1]
                     );
                     if (nodeTime === intervalTime) {
+                        this.lastControlX =
+                            this.lastX + this.lastX - this.lastControlX;
+                        this.lastControlY =
+                            this.lastY + this.lastY - this.lastControlY;
                         this.lastControlX =
                             this.lastX + this.lastX - this.lastControlX;
                         this.lastControlY =
@@ -363,8 +400,13 @@ namespace animation {
                         this.lastY + this.lastY - this.lastControlY,
                         this.args[0] + this.lastX,
                         this.args[1] + this.lastY
+                        this.args[1] + this.lastY
                     );
                     if (nodeTime === intervalTime) {
+                        this.lastControlX =
+                            this.lastX + this.lastX - this.lastControlX;
+                        this.lastControlY =
+                            this.lastY + this.lastY - this.lastControlY;
                         this.lastControlX =
                             this.lastX + this.lastX - this.lastControlX;
                         this.lastControlY =
@@ -386,6 +428,7 @@ namespace animation {
                         this.args[3],
                         this.args[4],
                         this.args[5]
+                        this.args[5]
                     );
                     break;
                 case "c": // c dx1 dy1 dx2 dy2 dx3 dy3
@@ -402,6 +445,7 @@ namespace animation {
                         this.args[2] + this.lastX,
                         this.args[3] + this.lastY,
                         this.args[4] + this.lastX,
+                        this.args[5] + this.lastY
                         this.args[5] + this.lastY
                     );
                     break;
@@ -439,6 +483,7 @@ namespace animation {
                         this.args[1] + this.lastY,
                         this.args[2] + this.lastX,
                         this.args[3] + this.lastY
+                        this.args[3] + this.lastY
                     );
                     if (nodeTime === intervalTime) {
                         this.lastControlX = this.args[0] + this.lastX;
@@ -465,9 +510,18 @@ namespace animation {
         protected ensureControlPoint() {
             if (this.lastControlX === undefined)
                 throw "Invalid path command. S/s and T/t must follow either Q/q or C/c";
+            if (this.lastControlX === undefined)
+                throw "Invalid path command. S/s and T/t must follow either Q/q or C/c";
         }
     }
 
+    function moveTo(
+        target: Sprite,
+        nodeTime: number,
+        interval: number,
+        x: number,
+        y: number
+    ) {
     function moveTo(
         target: Sprite,
         nodeTime: number,
@@ -487,12 +541,32 @@ namespace animation {
         x1: number,
         y1: number
     ) {
+    function lineTo(
+        target: Sprite,
+        nodeTime: number,
+        interval: number,
+        x0: number,
+        y0: number,
+        x1: number,
+        y1: number
+    ) {
         target.setPosition(
             Math.round(((x1 - x0) / interval) * nodeTime) + x0,
             Math.round(((y1 - y0) / interval) * nodeTime) + y0
         );
     }
 
+    function quadraticCurveTo(
+        target: Sprite,
+        nodeTime: number,
+        interval: number,
+        x0: number,
+        y0: number,
+        x1: number,
+        y1: number,
+        x2: number,
+        y2: number
+    ) {
     function quadraticCurveTo(
         target: Sprite,
         nodeTime: number,
@@ -529,6 +603,19 @@ namespace animation {
         x3: number,
         y3: number
     ) {
+    function cubicCurveTo(
+        target: Sprite,
+        nodeTime: number,
+        interval: number,
+        x0: number,
+        y0: number,
+        x1: number,
+        y1: number,
+        x2: number,
+        y2: number,
+        x3: number,
+        y3: number
+    ) {
         const progress = nodeTime / interval;
         const diff = 1 - progress;
         const a = diff * diff * diff;
@@ -552,10 +639,13 @@ namespace animation {
         public init() {
             let state: AnimationState =
                 game.currentScene().data[stateNamespace];
+            let state: AnimationState =
+                game.currentScene().data[stateNamespace];
 
             // Register animation updates to fire when frames are rendered
             if (!state) {
                 state = game.currentScene().data[stateNamespace] = {
+                    animations: [],
                     animations: [],
                 } as AnimationState;
 
@@ -571,9 +661,32 @@ namespace animation {
                         );
                     }
                 );
+                game.eventContext().registerFrameHandler(
+                    scene.ANIMATION_UPDATE_PRIORITY,
+                    () => {
+                        state.animations = state.animations.filter(
+                            (anim: SpriteAnimation) => {
+                                if (anim.sprite.flags & sprites.Flag.Destroyed)
+                                    return false;
+                                return !anim.update(); // If update returns true, the animation is done and will be removed
+                            }
+                        );
+                    }
+                );
             }
 
             // Remove any other animations of this type and attached to this sprite
+            state.animations = state.animations.filter(
+                (anim: SpriteAnimation) => {
+                    return !(
+                        anim.sprite === this.sprite &&
+                        ((anim instanceof ImageAnimation &&
+                            this instanceof ImageAnimation) ||
+                            (anim instanceof MovementAnimation &&
+                                this instanceof MovementAnimation))
+                    );
+                }
+            );
             state.animations = state.animations.filter(
                 (anim: SpriteAnimation) => {
                     return !(
@@ -604,6 +717,12 @@ namespace animation {
             private frameInterval: number,
             loop?: boolean
         ) {
+        constructor(
+            sprite: Sprite,
+            private frames: Image[],
+            private frameInterval: number,
+            loop?: boolean
+        ) {
             super(sprite, loop);
             this.lastFrame = -1;
         }
@@ -611,6 +730,9 @@ namespace animation {
         public update(): boolean {
             this.elapsedTime += game.eventContext().deltaTimeMillis;
 
+            const frameIndex = Math.floor(
+                this.elapsedTime / this.frameInterval
+            );
             const frameIndex = Math.floor(
                 this.elapsedTime / this.frameInterval
             );
@@ -639,6 +761,12 @@ namespace animation {
             private nodeInterval: number,
             loop?: boolean
         ) {
+        constructor(
+            sprite: Sprite,
+            private path: Path,
+            private nodeInterval: number,
+            loop?: boolean
+        ) {
             super(sprite, loop);
             this.startX = sprite.x;
             this.startY = sprite.y;
@@ -648,6 +776,11 @@ namespace animation {
         public update(): boolean {
             this.elapsedTime += game.eventContext().deltaTimeMillis;
 
+            let result = this.path.run(
+                this.nodeInterval,
+                this.sprite,
+                this.elapsedTime
+            );
             let result = this.path.run(
                 this.nodeInterval,
                 this.sprite,
@@ -688,6 +821,19 @@ namespace animation {
             frameInterval || 500,
             !!loop
         );
+    //% blockHidden=true gb.override
+    export function runImageAnimation(
+        sprite: Sprite,
+        frames: Image[],
+        frameInterval?: number,
+        loop?: boolean
+    ) {
+        const anim = new ImageAnimation(
+            sprite,
+            frames,
+            frameInterval || 500,
+            !!loop
+        );
         anim.init();
     }
 
@@ -710,7 +856,20 @@ namespace animation {
         duration?: number,
         loop?: boolean
     ) {
+    //% blockHidden=true gb.override
+    export function runMovementAnimation(
+        sprite: Sprite,
+        pathString: string,
+        duration?: number,
+        loop?: boolean
+    ) {
         const path = new Path(pathString);
+        const anim = new MovementAnimation(
+            sprite,
+            path,
+            duration / path.length,
+            !!loop
+        );
         const anim = new MovementAnimation(
             sprite,
             path,
@@ -727,6 +886,7 @@ namespace animation {
         ImageAnimation,
         //% block="path"
         MovementAnimation,
+        MovementAnimation,
     }
 
     /**
@@ -740,9 +900,29 @@ namespace animation {
     //% weight=60
     //% help=animation/stop-animation
     //% blockHidden=true gb.override
+    //% blockHidden=true gb.override
     export function stopAnimation(type: AnimationTypes, sprite: Sprite) {
         let state: AnimationState = game.currentScene().data[stateNamespace];
         if (state && state.animations) {
+            state.animations = state.animations.filter(
+                (anim: SpriteAnimation) => {
+                    if (anim.sprite === sprite) {
+                        switch (type) {
+                            case AnimationTypes.ImageAnimation:
+                                if (anim instanceof ImageAnimation)
+                                    return false;
+                                break;
+                            case AnimationTypes.MovementAnimation:
+                                if (anim instanceof MovementAnimation)
+                                    return false;
+                                break;
+                            case AnimationTypes.All:
+                                return false;
+                        }
+                    }
+                    return true;
+                }
+            );
             state.animations = state.animations.filter(
                 (anim: SpriteAnimation) => {
                     if (anim.sprite === sprite) {
@@ -767,7 +947,12 @@ namespace animation {
             type == AnimationTypes.All ||
             type == AnimationTypes.ImageAnimation
         ) {
+        if (
+            type == AnimationTypes.All ||
+            type == AnimationTypes.ImageAnimation
+        ) {
             //stop state based animation if any as well
+            sprite._action = -1;
             sprite._action = -1;
         }
     }
@@ -779,8 +964,14 @@ namespace animation {
     export const shake = new PathPreset(
         "m 4 -1 m 1 2 m -6 2 m -4 -8 m 8 8 m 2 -4 m -8 0 m 6 3 m -3 -2"
     );
+    export const shake = new PathPreset(
+        "m 4 -1 m 1 2 m -6 2 m -4 -8 m 8 8 m 2 -4 m -8 0 m 6 3 m -3 -2"
+    );
 
     //% fixedInstance whenUsed block="bounce (right)"
+    export const bounceRight = new PathPreset(
+        "q 7 0 15 40 q 10 -30 15 -25 q 10 5 15 25 q 5 -25 10 0 q 4 -15 8 0 q 2 -10 4 0 q 1 -5 1 0 q 0 -2 1 0"
+    );
     export const bounceRight = new PathPreset(
         "q 7 0 15 40 q 10 -30 15 -25 q 10 5 15 25 q 5 -25 10 0 q 4 -15 8 0 q 2 -10 4 0 q 1 -5 1 0 q 0 -2 1 0"
     );
@@ -789,13 +980,22 @@ namespace animation {
     export const bounceLeft = new PathPreset(
         "q -7 0 -15 40 q -10 -30 -15 -25 q -10 5 -15 25 q -5 -25 -10 0 q -4 -15 -8 0 q -2 -10 -4 0 q -1 -5 -1 0 q 0 -2 -1 0"
     );
+    export const bounceLeft = new PathPreset(
+        "q -7 0 -15 40 q -10 -30 -15 -25 q -10 5 -15 25 q -5 -25 -10 0 q -4 -15 -8 0 q -2 -10 -4 0 q -1 -5 -1 0 q 0 -2 -1 0"
+    );
 
     //% fixedInstance whenUsed block="parachute (right)"
     export const parachuteRight = new PathPreset(
         "q 20 10 40 5 q 2 -2 0 0 q -15 10 -30 5 q -2 -2 0 0 q 10 10 20 5 q 2 -2 0 0 q -5 5 -10 3 q -1 -1 0 0 q 2 2 5 1 l 0 2 l 0 2 l 0 2"
     );
+    export const parachuteRight = new PathPreset(
+        "q 20 10 40 5 q 2 -2 0 0 q -15 10 -30 5 q -2 -2 0 0 q 10 10 20 5 q 2 -2 0 0 q -5 5 -10 3 q -1 -1 0 0 q 2 2 5 1 l 0 2 l 0 2 l 0 2"
+    );
 
     //% fixedInstance whenUsed block="parachute (left)"
+    export const parachuteLeft = new PathPreset(
+        "q -20 10 -40 5 q -2 -2 0 0 q 15 10 30 5 q 2 -2 0 0 q -10 10 -20 5 q -2 -2 0 0 q 5 5 10 3 q 1 -1 0 0 q -2 2 -5 1 l 0 2 l 0 2 l 0 2"
+    );
     export const parachuteLeft = new PathPreset(
         "q -20 10 -40 5 q -2 -2 0 0 q 15 10 30 5 q 2 -2 0 0 q -10 10 -20 5 q -2 -2 0 0 q 5 5 10 3 q 1 -1 0 0 q -2 2 -5 1 l 0 2 l 0 2 l 0 2"
     );
@@ -807,11 +1007,17 @@ namespace animation {
     export const easeLeft = new PathPreset(
         "h -5 h -10 h -20 h -30 h -20 h -10 h -5"
     );
+    export const easeLeft = new PathPreset(
+        "h -5 h -10 h -20 h -30 h -20 h -10 h -5"
+    );
 
     //% fixedInstance whenUsed block="ease (down)"
     export const easeDown = new PathPreset("v 5 v 10 v 20 v 30 v 20 v 10 v 5");
 
     //% fixedInstance whenUsed block="ease (up)"
+    export const easeUp = new PathPreset(
+        "v -5 v -10 v -20 v -30 v -20 v -10 v -5"
+    );
     export const easeUp = new PathPreset(
         "v -5 v -10 v -20 v -30 v -20 v -10 v -5"
     );
@@ -855,6 +1061,7 @@ namespace animation {
     //% blockHidden=true gb.override
     //% help=animation/animation-frames
     export function _animationFrames(frames: Image[]) {
+        return frames;
         return frames;
     }
 }
